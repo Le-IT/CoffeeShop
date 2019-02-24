@@ -1,0 +1,34 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+sourceCompatibility = 9
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(
+            'org.springframework.boot:spring-boot-starter-data-jpa',
+            'com.h2database:h2',
+            'javax.xml.bind:jaxb-api:2.3.0',
+    )
+    testImplementation(
+            'org.springframework.boot:spring-boot-starter-test',
+    )
+}
+
+
