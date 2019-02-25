@@ -1,0 +1,9 @@
+# Ignore idea path
+.idea/*
+# Ignore system-specific gradle
+.gradle/*
+gradle/*
+gradlew
+gradlew.bat
+# Ignore compiled output
+out/*
