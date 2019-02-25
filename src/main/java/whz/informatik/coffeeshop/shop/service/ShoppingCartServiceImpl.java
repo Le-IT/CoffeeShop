@@ -1,19 +1,22 @@
 package whz.informatik.coffeeshop.shop.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Item;
 import whz.informatik.coffeeshop.shop.domain.Product;
 import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
 import whz.informatik.coffeeshop.shop.domain.repository.ItemRepository;
 import whz.informatik.coffeeshop.shop.domain.repository.ShoppingCartRepository;
+import whz.informatik.coffeeshop.shop.service.dto.ItemDTO;
+import whz.informatik.coffeeshop.shop.service.dto.ProductDTO;
+import whz.informatik.coffeeshop.shop.service.dto.ProductTypeDTO;
+import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -31,6 +34,33 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.itemRepository = itemRepository;
         this.customerService = customerService;
     }
+
+
+    @Override
+    public Optional<ShoppingCartDTO> getShoppingCartDTOById(long shoppingCartId) {
+        Optional<ShoppingCart> optionalShoppingCart = getShoppingCartById(shoppingCartId);
+        if(optionalShoppingCart.isPresent()) {
+            ShoppingCartDTO shoppingCartDTO = DTOUtils.createDTO(optionalShoppingCart.get());
+            return Optional.of(shoppingCartDTO);
+        } return Optional.empty();
+    }
+
+    @Override
+    public List<ShoppingCartDTO> getShoppingCartsDTOByCustomer(Customer customer) {
+        List<ShoppingCart> targetListOrigin = getShoppingCartsByCustomer(customer);
+        List<ShoppingCartDTO> targetList = new ArrayList<>();
+        targetListOrigin.forEach(cart -> targetList.add(DTOUtils.createDTO(cart)));
+        return targetList;
+    }
+
+    @Override
+    public List<ShoppingCartDTO> getShoppingCartsDTOByCustomerId(long customerId) {
+        Optional<Customer> optionalCustomer = customerService.getById(customerId);
+        if(optionalCustomer.isPresent())
+            return getShoppingCartsDTOByCustomer(optionalCustomer.get());
+        return new ArrayList<>();
+    }
+
 
     @Override
     public Optional<ShoppingCart> getShoppingCartById(long shoppingCartId) {
@@ -64,8 +94,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void update(ShoppingCart shoppingCart) {
-        shoppingCartRepository.save(shoppingCart);
+    public ShoppingCart update(ShoppingCart shoppingCart) {
+        if(shoppingCartRepository.existsById(shoppingCart.getId()))
+            return shoppingCartRepository.save(shoppingCart);
+        return null;
     }
 
     @Override

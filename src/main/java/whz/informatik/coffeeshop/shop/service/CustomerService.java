@@ -1,6 +1,7 @@
 package whz.informatik.coffeeshop.shop.service;
 
 import whz.informatik.coffeeshop.shop.domain.Customer;
+import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,10 @@ public interface CustomerService {
     Optional<Customer> getById(long customerId);
     Optional<Customer> getByLoginName(String loginName);
     Customer addCustomer(Customer customer);
+
+    List<CustomerDTO> getAllDTO();
+    Optional<CustomerDTO> getDTOById(long customerId);
+
 
     /**
      * If customer with customer.id exists

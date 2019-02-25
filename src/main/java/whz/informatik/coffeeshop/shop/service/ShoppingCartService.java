@@ -4,6 +4,8 @@ import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Item;
 import whz.informatik.coffeeshop.shop.domain.Product;
 import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
+import whz.informatik.coffeeshop.shop.service.dto.ItemDTO;
+import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,13 +19,17 @@ public interface ShoppingCartService {
     List<ShoppingCart> getShoppingCartsByCustomer(Customer customer);
     List<ShoppingCart> getShoppingCartsByCustomerId(long customerId);
 
-    void update(ShoppingCart shoppingCart);
+    Optional<ShoppingCartDTO> getShoppingCartDTOById(long shoppingCartId);
+    List<ShoppingCartDTO> getShoppingCartsDTOByCustomer(Customer customer);
+    List<ShoppingCartDTO> getShoppingCartsDTOByCustomerId(long customerId);
+
+    ShoppingCart update(ShoppingCart shoppingCart);
 
     void addItemToCart(long shoppingCartId, Item item);
     void addItemToCart(ShoppingCart shoppingCart, Item item);
     void addAllItemsToCart(long shoppingCartId, Collection<Item> items);
     void addAllItemsToCart(ShoppingCart shoppingCart, Collection<Item> items);
-    public void deleteProductFromCart(ShoppingCart shppingCard, Product product);
+    void deleteProductFromCart(ShoppingCart shppingCard, Product product);
 
     void deleteItem(Item item);
 

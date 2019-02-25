@@ -2,9 +2,12 @@ package whz.informatik.coffeeshop.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.repository.CustomerRepository;
+import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,7 @@ public class CustomerServiceImpl implements CustomerService{
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+
 
     @Override
     public List<Customer> getAll() {
@@ -37,6 +41,23 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer addCustomer(Customer customer) {
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public List<CustomerDTO> getAllDTO() {
+        List<Customer> targetListOrigin = getAll();
+        List<CustomerDTO> targetList = new ArrayList<>();
+        targetListOrigin.forEach(customer -> targetList.add(DTOUtils.createDTO(customer)));
+        return targetList;
+    }
+
+    @Override
+    public Optional<CustomerDTO> getDTOById(long customerId) {
+        Optional<Customer> optionalCustomer = getById(customerId);
+        if(optionalCustomer.isPresent()) {
+            CustomerDTO shoppingCartDTO = DTOUtils.createDTO(optionalCustomer.get());
+            return Optional.of(shoppingCartDTO);
+        } return Optional.empty();
     }
 
     /**
