@@ -25,7 +25,10 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-data-jpa',
             'com.h2database:h2',
             'javax.xml.bind:jaxb-api:2.3.0',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-security'
     )
+    runtime('org.springframework.boot:spring-boot-properties-migrator')
     testImplementation(
             'org.springframework.boot:spring-boot-starter-test',
     )
