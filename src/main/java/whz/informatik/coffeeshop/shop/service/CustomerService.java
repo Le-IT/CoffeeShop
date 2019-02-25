@@ -15,7 +15,7 @@ public interface CustomerService {
      * If customer with customer.id exists
      * updates the customer in db with the current state of customer(param)
      * @param customer - the customer to update
-     * @return customer - the customer for further calls
+     * @return customer - the customer for further calls, if non existant return null
      */
     Customer updateCustomer(Customer customer);
     void removeCustomer(Customer customer);
