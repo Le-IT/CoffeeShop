@@ -1,6 +1,5 @@
 package whz.informatik.coffeeshop.shop.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whz.informatik.coffeeshop.common.DTOUtils;
@@ -10,9 +9,6 @@ import whz.informatik.coffeeshop.shop.domain.Product;
 import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
 import whz.informatik.coffeeshop.shop.domain.repository.ItemRepository;
 import whz.informatik.coffeeshop.shop.domain.repository.ShoppingCartRepository;
-import whz.informatik.coffeeshop.shop.service.dto.ItemDTO;
-import whz.informatik.coffeeshop.shop.service.dto.ProductDTO;
-import whz.informatik.coffeeshop.shop.service.dto.ProductTypeDTO;
 import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
 
 import java.time.Instant;

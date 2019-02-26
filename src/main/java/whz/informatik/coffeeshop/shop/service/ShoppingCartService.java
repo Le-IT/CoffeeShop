@@ -4,7 +4,6 @@ import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Item;
 import whz.informatik.coffeeshop.shop.domain.Product;
 import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
-import whz.informatik.coffeeshop.shop.service.dto.ItemDTO;
 import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
 
 import java.util.Collection;

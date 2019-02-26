@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="fragments/header :: head">
+    <meta charset="utf-8">
+</head>
+<body>
+<div th:replace="fragments/body :: navbar (${currentUser}, ${currentCustomer})"></div>
+<br>
+<div th:replace="fragments/body :: heading ('Willkommen bei CoffeeShop')" class="container"></div>
+
+<div class="container">
+    <div th:include="fragments/body :: listProducts (${listProducts},${currentCustomer})"></div>
+</div>
+
+<div style="height: 65px"></div>
+<div th:include="fragments/footer :: footer" class="footer"></div>
+</body>
+</html>

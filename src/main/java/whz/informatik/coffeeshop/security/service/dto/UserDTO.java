@@ -1,9 +1,12 @@
 package whz.informatik.coffeeshop.security.service.dto;
 
+import whz.informatik.coffeeshop.security.domain.Role;
+
 public class UserDTO {
     private Long id;
     private String loginName;
     private String email;
+    private Role role;
 
     public String getLoginName() {
         return loginName;
@@ -22,5 +25,11 @@ public class UserDTO {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

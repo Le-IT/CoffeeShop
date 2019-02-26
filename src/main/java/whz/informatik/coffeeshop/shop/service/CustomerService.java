@@ -14,6 +14,7 @@ public interface CustomerService {
 
     List<CustomerDTO> getAllDTO();
     Optional<CustomerDTO> getDTOById(long customerId);
+    Optional<CustomerDTO> getDTOByLoginName(String loginName);
 
 
     /**

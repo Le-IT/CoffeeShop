@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<body>
+<div th:fragment="navbar (currentUser, currentCustomer)">
+    <div style="padding: 5px 10px">
+        <div class="topnav">
+            <th:block th:if="${currentUser}">
+                <a th:if="${currentUser.role == T(whz.informatik.coffeeshop.security.domain.Role).ADMIN}" th:href="@{#/users_managed}" style="float: left">
+                    Nutzer Administration
+                </a>
+            </th:block>
+            <div class="topnav-right">
+                <th:block th:if="${currentUser}">
+                    <th:block th:if="${currentCustomer}">
+                        <a th:href="@{'#/shoppingCart?id=' + ${currentCustomer.id}}">Warenkorb</a>
+                    </th:block>
+                    <a th:href="@{'#/profile?id=' + ${currentUser.id}}" th:text="${'Profile: ' + currentUser.loginName}"/>
+                    <a href="/logout">Logout</a>
+                </th:block>
+                <th:block th:unless="${currentUser}">
+                    <a href="/login">Login</a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="heading (txt)">
+    <a href="/">
+        <div class="container container-header">
+            <header>
+                <h1 class="text-center" th:text="${txt}">Willkommen</h1>
+            </header>
+        </div>
+    </a>
+</div>
+
+<div th:fragment="listProducts (products,currentCustomer)">
+    <br>
+    <div class="section-title h4">Produkte</div>
+    <br>
+    <table class="table table-hover table-bordered table-sm"
+           th:if="${products != null}">
+        <thead class="thead-light">
+        <tr>
+            <!--<th scope="col">ID</th>-->
+            <th scope="col">Name</th>
+            <th scope="col">Beschreibung</th>
+            <th scope="col" style="text-align:center">Preis</th>
+            <th scope="col">ProduktTyp</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <!--<td><span th:text="${product.id}"/></td>-->
+            <td>
+                <span th:if="${currentCustomer}" class="clickable" th:onclick="'showProductModal(' + ${product.id} + ',\'' + ${product.name} + '\');'" th:text="${product.name}"/>
+                <span th:unless="${currentCustomer}" th:text="${product.name}"></span>
+            </td>
+            <td><span th:text="${product.description}"/></td>
+            <td style="text-align:right"><span th:text="${product.price}"/><span th:text="${product.currency}"/></td>
+            <td><span th:text="${product.productType.name}"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="addProductModal" class="modal">
+        <form class="animate" th:action="@{#/addToCart}" method="post">
+            <div class="col-xs-4 col-sm-4 col-md-4 modal-content">
+                <div class="row">
+                    <div class="col-xs-11 col-sm-11 col-md-11"></div>
+                    <div class="col-xs-1 col-sm-1 col-md-1">
+                        <span onclick="closeProductModal()" class="close" title="Close Modal">&times;</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3 col-md-3">
+                        <label for="productToAdd">Produkt</label>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9">
+                        <span id="productToAdd" style="width:100%" placeholder="Produkt..."></span>
+                        <input type="hidden" id="productId" required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3 col-md-3">
+                        <label for="quantity">Anzahl</label>
+                    </div>
+                    <div class="col-xs-9 col-sm-9 col-md-9">
+                        <input type="number" id="quantity" style="width:100%;" min="1" value="1" autofocus="autofocus" required/>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6"></div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <input type="submit" class="btn btn-outline-primary" style="padding-bottom: 5px" value="Warenkorb hinzuf&uuml;gen"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        function showProductModal(productId,product) {
+            $('#productToAdd').text(product);
+            $('#productId').val(productId);
+            $('#quantity').val(1);
+            $('#addProductModal').css("display", "inline-block");
+        }
+
+        function closeProductModal() {
+            $('#addProductModal').css("display", "none");
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.security.domain.CustomerCreateForm;
 import whz.informatik.coffeeshop.security.domain.User;
 import whz.informatik.coffeeshop.security.domain.UserRepository;
@@ -31,10 +32,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Getting user by id={} as dto", id);
         User user = userRepository.findById(id).orElseThrow(() ->
                 new NoSuchElementException(String.format(">>> User=%s not found", id)));
-        UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO);
-        userDTO.setId(user.getId());
-        return userDTO;
+        return DTOUtils.createDTO(user);
     }
 
     @Override
@@ -42,12 +40,8 @@ public class UserServiceImpl implements UserService {
         log.debug("Getting all users as dto");
         List<User> targetListOrigin = userRepository.findAllByOrderByLoginNameAsc();
         List<UserDTO> targetList= new ArrayList<>();
-        for (User source: targetListOrigin ) {
-            UserDTO target= new UserDTO();
-            BeanUtils.copyProperties(source , target);
-            target.setId(source.getId());
-            targetList.add(target);
-        } return targetList;
+        targetListOrigin.forEach(user -> targetList.add(DTOUtils.createDTO(user)));
+        return targetList;
     }
 
     @Override

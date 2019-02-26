@@ -60,6 +60,15 @@ public class CustomerServiceImpl implements CustomerService{
         } return Optional.empty();
     }
 
+    @Override
+    public Optional<CustomerDTO> getDTOByLoginName(String loginName) {
+        Optional<Customer> optionalCustomer = getByLoginName(loginName);
+        if(optionalCustomer.isPresent()) {
+            CustomerDTO customerDTO = DTOUtils.createDTO(optionalCustomer.get());
+            return Optional.of(customerDTO);
+        } return Optional.empty();
+    }
+
     /**
      * If customer with customer.id exists
      * updates the customer in db with the current state of customer(param)
