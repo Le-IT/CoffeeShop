@@ -20,15 +20,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartRepository shoppingCartRepository;
     private ItemRepository itemRepository;
     private CustomerService customerService;
+    private ProductService productService;
 
 
     @Autowired
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository,
                                    ItemRepository itemRepository,
-                                   CustomerService customerService) {
+                                   CustomerService customerService,
+                                   ProductService productService) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.itemRepository = itemRepository;
         this.customerService = customerService;
+        this.productService = productService;
     }
 
 
@@ -133,5 +136,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteItem(Item item) {
         if(itemRepository.existsById(item.getId()))
             itemRepository.delete(item);
+    }
+
+    @Override
+    public Item createItem(long productId, int amount) {
+        Product product = productService.getById(productId).get();
+        Item item = new Item();
+        item.setup(amount,product);
+        return itemRepository.save(item);
     }
 }

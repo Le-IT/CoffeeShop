@@ -31,5 +31,6 @@ public interface ShoppingCartService {
     void deleteProductFromCart(ShoppingCart shppingCard, Product product);
 
     void deleteItem(Item item);
+    Item createItem(long productId, int amount);
 
 }
