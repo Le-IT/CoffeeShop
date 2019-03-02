@@ -1,14 +1,17 @@
 package whz.informatik.coffeeshop.shop.domain;
 
 import whz.informatik.coffeeshop.common.BaseEntity;
+import whz.informatik.coffeeshop.shop.domain.listener.CustomerListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@EntityListeners(CustomerListener.class)
 public class Customer extends BaseEntity<Long> {
 
     private String firstName;
