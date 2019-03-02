@@ -4,9 +4,11 @@ import whz.informatik.coffeeshop.common.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 
 @Entity
+@EntityListeners(UserListener.class)
 @Table(name = "secuser")
 public class User extends BaseEntity<Long> {
 

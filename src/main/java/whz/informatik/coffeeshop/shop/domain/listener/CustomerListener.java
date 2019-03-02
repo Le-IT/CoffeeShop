@@ -18,7 +18,7 @@ public class CustomerListener {
 
     @PostUpdate
     public void logAfterUpdate(Customer customer) {
-        log.info("Updated ShoppingCart with loginName={}", customer.getLoginName());
+        log.info("Updated Customer with loginName={}", customer.getLoginName());
     }
 
     @PostRemove
