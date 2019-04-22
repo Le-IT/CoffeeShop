@@ -90,7 +90,7 @@ public class ShoppingCartController {
         model.addAttribute("actualCart", shoppingCart);
         model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
 
-        return "shoppingCart";
+        return "redirect:/shoppingCart?id="+customer.getId();
     }
 
     @RequestMapping (value = "shoppingCart")
