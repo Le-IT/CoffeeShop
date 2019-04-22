@@ -17,6 +17,7 @@ import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
 import whz.informatik.coffeeshop.shop.service.ShoppingCartService;
 
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -75,6 +76,36 @@ public class ShoppingCartController {
 
         return "redirect:/";
     }
+
+    @RequestMapping (value = "/deleteItemFromCart")
+    public String handleDeleteItem(@RequestParam long itemId, Model model){
+        String from = CurrentUserUtil.getCurrentUser(model);
+        Customer customer = customerService.getByLoginName(from).get();
+        ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
+
+        Item item = shoppingCart.getItemById(itemId).get();
+
+        shoppingCart.removeItem(item);
+        shoppingCartService.update(shoppingCart);
+        model.addAttribute("actualCart", shoppingCart);
+        model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
+
+        return "shoppingCart";
+    }
+
+    @RequestMapping (value = "shoppingCart")
+    public String handleShoppingCart(@RequestParam(value="id") int cartId, Model model ){
+        String from = CurrentUserUtil.getCurrentUser(model);
+        Customer customer = customerService.getByLoginName(from).get();
+        ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
+        model.addAttribute("actualCart", shoppingCart);
+        model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
+
+        return "shoppingCart";
+    }
+
+
+
 
 
 }

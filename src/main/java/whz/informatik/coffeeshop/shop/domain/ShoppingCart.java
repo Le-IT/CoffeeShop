@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Entity
@@ -33,6 +34,11 @@ public class ShoppingCart extends BaseEntity<Long> {
         return items;
     }
 
+    public  Optional<Item>  getItemById(long itemId){
+        return items.stream()
+                .filter(item -> item.getId() == itemId)
+                .findFirst();
+    }
     /**
      *
      * @param item
@@ -58,10 +64,23 @@ public class ShoppingCart extends BaseEntity<Long> {
         setCustomer(customer);
     }
 
+
+
+
+
     public Optional<Item> findProduct(Product product) {
         return items.stream()
                 .filter(item -> product.equals(item.getProduct()))
                 .findFirst();
+    }
+
+    public String getCalculatedSum(){
+        double tmpSum = 0;
+        DecimalFormat f = new DecimalFormat("#0.00");
+        for(Item item: items){
+            tmpSum = tmpSum+ (item.getQuantity()* item.getProduct().getPrice().doubleValue());
+        }
+        return f.format(tmpSum);
     }
 
     @Override

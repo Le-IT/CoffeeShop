@@ -5,14 +5,14 @@
     <div style="padding: 5px 10px">
         <div class="topnav">
             <th:block th:if="${currentUser}">
-                <a th:if="${currentUser.role == T(whz.informatik.coffeeshop.security.domain.Role).ADMIN}" th:href="@{#/users_managed}" style="float: left">
+                <a th:if="${currentUser.role == T(whz.informatik.coffeeshop.security.domain.Role).ADMIN}" th:href="@{/users_managed}" style="float: left">
                     Nutzer Administration
                 </a>
             </th:block>
             <div class="topnav-right">
                 <th:block th:if="${currentUser}">
                     <th:block th:if="${currentCustomer}">
-                        <a th:href="@{'#/shoppingCart?id=' + ${currentCustomer.id}}">Warenkorb</a>
+                        <a th:href="@{'/shoppingCart?id=' + ${currentCustomer.id}}">Warenkorb</a>
                     </th:block>
                     <a th:href="@{'#/profile?id=' + ${currentUser.id}}" th:text="${'Profile: ' + currentUser.loginName}"/>
                     <a href="/logout">Logout</a>
@@ -112,5 +112,90 @@
         }
     </script>
 </div>
+
+<div th:fragment="users_managed (customers)">
+    <br>
+    <div class="section-title h4">Kunden</div>
+    <br>
+    <table class="table table-hover table-bordered table-sm"
+           th:if="${customers != null}">
+        <thead class="thead-light">
+        <tr>
+            <!--<th scope="col">ID</th>-->
+            <th scope="col">Vornameame</th>
+            <th scope="col">Nachnameame</th>
+            <th scope="col">Login</th>
+            <th scope="col"></th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+
+            <td th:text="${customer.firstName}" />
+            <td th:text="${customer.lastName}" />
+            <td th:text="${customer.loginName}" />
+            <td>
+                <a href="#">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:fragment="myShoppingCart (actualCart, summedPrice)">
+    <br>
+
+    <br>
+    <table class="table table-hover table-bordered table-sm"
+           th:if="${actualCart.items != null}">
+        <thead class="thead-light">
+        <tr>
+            <!--<th scope="col">ID</th>-->
+            <th scope="col">Artikel</th>
+            <th scope="col">Anzahl</th>
+            <th scope="col">Preis</th>
+            <th scope="col"></th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${actualCart.items}">
+
+            <td th:text="${item.product.name}" />
+            <td th:text="${item.quantity}" />
+            <td th:text="${item.product.price}" />
+            <td>
+                <a th:href="@{'/deleteItemFromCart?itemId=' + ${item.id}}">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="container-fluid">
+        <div class="row">
+            <a class="col-md-9" style="font-weight: bold"></a>
+            <a style="font-weight: bold">Summe: </a>
+            <a class="col-md-2" style="font-weight: bold" th:text="${summedPrice}+' &euro;'"></a>
+        </div>
+        <div class="row">
+            <a class="col-md-9" style="font-weight: bold"></a>
+
+            <button type="button" class="btn btn-success" >Jetzt kostenpflichtig Bestellen</button>
+        </div>
+    </div>
+
+
+
+</div>
+
 </body>
 </html>
