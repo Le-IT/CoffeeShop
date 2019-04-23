@@ -4,12 +4,12 @@
     <meta charset="utf-8">
 </head>
 <body>
-<!--<div th:replace="fragments/body :: navbar (${currentUser}, ${currentCustomer})"></div>-->
+<div th:replace="fragments/body :: navbar (${currentUser}, ${currentCustomer})"></div>
 <br>
-<div th:replace="fragments/body :: heading ('Mein Warenkorb')" class="container"></div>
+<div th:replace="fragments/body :: heading ('Mein Account')" class="container"></div>
 
 <div class="container">
-    <div th:include="fragments/body :: myShoppingCart (${actualCart}, ${summedPrice})"></div>
+    <div th:include="fragments/body :: myAccount (${currentCustomer})"></div>
 </div>
 
 <div style="height: 65px"></div>

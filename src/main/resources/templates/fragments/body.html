@@ -13,8 +13,8 @@
                 <th:block th:if="${currentUser}">
                     <th:block th:if="${currentCustomer}">
                         <a th:href="@{'/shoppingCart?id=' + ${currentCustomer.id}}">Warenkorb</a>
+                        <a th:href="@{'/profile?id=' + ${currentUser.id}}" th:text="${'Profile: ' + currentUser.loginName}"/>
                     </th:block>
-                    <a th:href="@{'#/profile?id=' + ${currentUser.id}}" th:text="${'Profile: ' + currentUser.loginName}"/>
                     <a href="/logout">Logout</a>
                 </th:block>
                 <th:block th:unless="${currentUser}">
@@ -148,7 +148,7 @@
 
 </div>
 
-<div th:fragment="myShoppingCart (actualCart, summedPrice)">
+<div th:fragment="myShoppingCart (actualCart,summedPrice)">
     <br>
 
     <br>
@@ -192,6 +192,81 @@
             <button type="button" class="btn btn-success" >Jetzt kostenpflichtig Bestellen</button>
         </div>
     </div>
+
+
+
+</div>
+
+<div th:fragment="myAccount (userAccount)">
+    <br>
+
+    <br>
+
+    <div class="container-fluid">
+        <div class="row">
+            <a class="col-md-2" style="font-weight: bold">Name: </a>
+            <a th:text="${userAccount.lastName}" />
+        </div>
+        <div class="row">
+            <a class="col-md-2" style="font-weight: bold">Vorname: </a>
+            <a th:text="${userAccount.firstName}" />
+        </div>
+        <div class="row">
+            <a class="col-md-2" style="font-weight: bold">Login Name: </a>
+            <a th:text="${userAccount.loginName}" />
+        </div>
+
+    </div>
+    <br><br>
+    <h4>Meine Adressen:</h4>
+    <table class="table table-hover table-bordered table-sm"
+           th:if="${userAccount.addressList != null}">
+        <thead class="thead-light">
+        <tr>
+            <!--<th scope="col">ID</th>-->
+            <th scope="col">Straße</th>
+            <th scope="col">Hausnummer</th>
+            <th scope="col">PLZ</th>
+            <th scope="col">Stadt</th>
+            <th scope="col"></th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="adress : ${userAccount.addressList}">
+
+            <td th:text="${adress.street}" />
+            <td th:text="${adress.housenumber}" />
+            <td th:text="${adress.zipCode}" />
+            <td th:text="${adress.town}" />
+            <td>
+                <a >
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>&nbsp;&nbsp;
+                <a >
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </a>
+            </td>
+
+        </tr>
+        <tr>
+            <form action="/addAdress" method="POST">
+            <td><input type="text" name="street" /></td>
+            <td><input type="text" name="housenumber" /></td>
+            <td><input type="text" name="zipCode" /></td>
+            <td><input type="text" name="town" /></td>
+            <td>
+
+                    <input type="submit" id="subm" hidden="true"/>
+                    <span onclick="$('#subm').click();" class="glyphicon glyphicon-plus"></span>
+
+
+            </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
 
 
 

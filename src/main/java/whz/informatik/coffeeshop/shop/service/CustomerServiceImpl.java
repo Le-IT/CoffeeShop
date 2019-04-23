@@ -53,6 +53,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Optional<CustomerDTO> getDTOById(long customerId) {
+        System.out.println(customerId);
         Optional<Customer> optionalCustomer = getById(customerId);
         if(optionalCustomer.isPresent()) {
             CustomerDTO shoppingCartDTO = DTOUtils.createDTO(optionalCustomer.get());

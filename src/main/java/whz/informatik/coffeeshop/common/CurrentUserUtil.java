@@ -15,4 +15,11 @@ public class CurrentUserUtil {
             model.addAttribute("isAdmin",true);
         return from;
     }
+    public static long getCurrentUserId(Model model) {
+        CurrentUser currentUser = (CurrentUser) model.asMap().get("currentUser");
+        if(currentUser == null || currentUser.getUser() == null) return 0;
+        Long currentUserId = currentUser.getId();
+
+        return currentUserId;
+    }
 }

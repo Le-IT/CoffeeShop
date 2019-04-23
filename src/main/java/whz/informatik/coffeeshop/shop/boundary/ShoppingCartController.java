@@ -98,6 +98,7 @@ public class ShoppingCartController {
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
+
         model.addAttribute("actualCart", shoppingCart);
         model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
 
