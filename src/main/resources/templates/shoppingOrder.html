@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="fragments/header :: head">
+    <meta charset="utf-8">
+</head>
+<body>
+<div th:replace="fragments/body :: navbar (${currentUser}, ${currentCustomer})"></div>
+<br>
+<div th:replace="fragments/body :: heading ('Meine Bestellungen')" class="container"></div>
+
+<section class="container">
+    <div id="accordion">
+        <th:block th:each="shoppingOrder : ${orders}">
+            <h4 th:text="@{'Bestellung vom ' + ${shoppingOrder.orderDate}}"></h4>
+            <div>
+                <table class="table table-hover table-bordered table-sm table-cart">
+                    <thead>
+                    <tr>
+                        <th scope="col">Produkt</th>
+                        <th scope="col" style="text-align: center">Anzahl</th>
+                        <th scope="col" style="text-align: center">Preis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="item-row" th:each="item : ${shoppingOrder.items}">
+                        <td><span th:text="${item.product.name}"/></td>
+                        <td><span th:text="${item.quantity}" style="float: right"/></td>
+                        <td>
+                            <span style="float:right">
+                                <span class="sum" th:text="@{${item.quantity}*${item.product.price}}"/>
+                                <span class="currency" th:text="${item.product.currency}"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <br>
+                    <tr style="border-top: 2px solid white">
+                        <td></td>
+                        <td>
+                            <span style="float:right;">Gesamtpreis:</span>
+                        </td>
+                        <td>
+                            <span class="total-value" style="float:right;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="float:right;">
+                            <form action="#useAsTemplate" method="post">
+                                <input name="orderid" type="hidden" th:value="${shoppingOrder.id}"/>
+                                <input type="submit" value="Als Vorlage benutzen"/>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+    <th:block th:if="${#lists.isEmpty(orders)}">
+        <p>Sie haben noch nichts bestellt</p>
+    </th:block>
+</section>
+
+<!--Accordion of shoppingOrders-->
+<script>
+    $('#accordion').accordion();
+    $(".table-cart").each(function() {
+        var overall = 0;
+        var currency = $(this).find(".currency").first().text();
+        $(this).find("tr.item-row").each(function () {
+            var $sum = $(this).find("td span").eq(2);
+            var sum = parseFloat($sum.text());
+            overall += sum;
+            console.log(overall);
+        });
+        $(this).find(".total-value").text(overall.toFixed(2) + ' ' + currency);
+    });
+</script>
+
+<div style="height: 65px"></div>
+<div th:include="fragments/footer :: footer" class="footer"></div>
+</body>
+</html>
