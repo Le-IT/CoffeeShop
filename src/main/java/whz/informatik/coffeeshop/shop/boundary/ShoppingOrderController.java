@@ -15,7 +15,7 @@ public class ShoppingOrderController {
     @Autowired
     CustomerService customerService;
 
-    @PreAuthorize("hasAuthority('USER')")
+    //@PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/orders")
     public String handleShoppingOrder(Model model) {
         String from = CurrentUserUtil.getCurrentUser(model);

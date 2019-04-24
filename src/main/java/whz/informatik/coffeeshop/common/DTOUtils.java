@@ -44,6 +44,16 @@ public class DTOUtils {
         return shoppingCartDTO;
     }
 
+    public static ShoppingOrderDTO createDTO(ShoppingOrder shoppingOrder) {
+        ShoppingOrderDTO shoppingOrderDTO = new ShoppingOrderDTO();
+        BeanUtils.copyProperties(shoppingOrder,shoppingOrderDTO);
+        shoppingOrderDTO.setId(shoppingOrder.getId());
+        List<ItemDTO> itemDTOList = new ArrayList<>();
+        shoppingOrder.getItems().forEach(item -> itemDTOList.add(createDTO(item)));
+        shoppingOrderDTO.setItems(itemDTOList);
+        return shoppingOrderDTO;
+    }
+
     public static ItemDTO createDTO(Item item) {
         ItemDTO itemDTO = new ItemDTO();
         BeanUtils.copyProperties(item,itemDTO,"product");

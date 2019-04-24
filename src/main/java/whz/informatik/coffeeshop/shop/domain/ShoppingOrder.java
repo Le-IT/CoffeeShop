@@ -5,6 +5,7 @@ import whz.informatik.coffeeshop.common.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,15 +13,16 @@ import java.util.List;
 public class ShoppingOrder extends BaseEntity<Long> {
     private Date orderDate;
     @OneToMany
-    List<Item> items = new ArrayList<>();
+    Collection<Item> items = new ArrayList<>();
 
 
     public Date getOrderDate() { return orderDate; }
     public void setOrderDate(Date orderDate) { this.orderDate = orderDate; }
-    public List<Item> getItems() { return items; }
+    public Collection<Item> getItems() { return items; }
     public void addItem(Item item) {
         items.add(item);
     }
+    public void addItems(Collection<Item> itemsParam){items.addAll(itemsParam);}
     public void removeItem(Item item) {
         items.remove(item);
     }

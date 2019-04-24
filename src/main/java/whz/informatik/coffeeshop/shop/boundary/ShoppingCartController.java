@@ -1,6 +1,7 @@
 package whz.informatik.coffeeshop.shop.boundary;
 
 
+import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
-import whz.informatik.coffeeshop.shop.domain.CurrentShoppingCart;
-import whz.informatik.coffeeshop.shop.domain.Customer;
-import whz.informatik.coffeeshop.shop.domain.Item;
-import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
+import whz.informatik.coffeeshop.shop.domain.*;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
 import whz.informatik.coffeeshop.shop.service.ShoppingCartService;
+import whz.informatik.coffeeshop.shop.service.ShoppingOrderService;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -29,16 +28,18 @@ public class ShoppingCartController {
     private Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
 
     private CurrentShoppingCart currentShoppingCart;
-
+    private ShoppingOrderService shoppingOrderService;
     private ShoppingCartService shoppingCartService;
     private CustomerService customerService;
 
     @Autowired
     public ShoppingCartController(CurrentShoppingCart currentShoppingCart,
                                   ShoppingCartService shoppingCartService,
+                                  ShoppingOrderService shoppingOrderService,
                                   CustomerService customerService) {
         this.currentShoppingCart = currentShoppingCart;
         this.shoppingCartService = shoppingCartService;
+        this.shoppingOrderService = shoppingOrderService;
         this.customerService = customerService;
     }
 
@@ -110,7 +111,10 @@ public class ShoppingCartController {
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
-
+        ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
+        shoppingCart.removeAllItems();
+        System.out.println("ShoppingCart ID: " + shoppingCart.getId());
+        System.out.println("ShoppingCart SIZE: " + shoppingCart.getItems().size());
 
         return "redirect:/shoppingCart?id="+customer.getId();
     }

@@ -106,12 +106,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if(shoppingCartOptional.isPresent())
             addItemToCart(shoppingCartOptional.get(),item);
     }
+    @Override
+    public void clearCart(long shoppingCartId) {
+        Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
+
+        if(shoppingCartOptional.isPresent()) {
+            shoppingCartOptional.get().removeAllItems();
+            update(shoppingCartOptional.get());
+        }
+    }
 
     @Override
     public void addItemToCart(ShoppingCart shoppingCart, Item item) {
         shoppingCart.addItem(item);
         update(shoppingCart);
     }
+
+
 
     @Override
     public void addAllItemsToCart(long shoppingCartId, Collection<Item> items) {

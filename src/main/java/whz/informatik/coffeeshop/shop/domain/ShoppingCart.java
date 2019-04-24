@@ -59,6 +59,9 @@ public class ShoppingCart extends BaseEntity<Long> {
     public void removeItem(Item item) {
         items.remove(item);
     }
+    public void removeAllItems(){
+       items.clear();
+    }
     public void setup(Date creationDate, Customer customer) {
         setCreationDate(creationDate);
         setCustomer(customer);

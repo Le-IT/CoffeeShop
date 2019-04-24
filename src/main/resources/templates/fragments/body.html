@@ -152,49 +152,48 @@
     <br>
 
     <br>
-    <table class="table table-hover table-bordered table-sm"
-           th:if="${actualCart.items != null}">
-        <thead class="thead-light">
-        <tr>
-            <!--<th scope="col">ID</th>-->
-            <th scope="col">Artikel</th>
-            <th scope="col">Anzahl</th>
-            <th scope="col">Preis</th>
-            <th scope="col"></th>
+    <form action="/sentOrder">
+        <table class="table table-hover table-bordered table-sm"
+               th:if="${actualCart.items != null}">
+            <thead class="thead-light">
+            <tr>
+                <!--<th scope="col">ID</th>-->
+                <th scope="col">Artikel</th>
+                <th scope="col">Anzahl</th>
+                <th scope="col">Preis</th>
+                <th scope="col"></th>
 
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${actualCart.items}">
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${actualCart.items}">
 
-            <td th:text="${item.product.name}"></td>
-            <td th:text="${item.quantity}" ></td>
-            <td th:text="${item.product.price}" ></td>
-            <td>
-                <a th:href="@{'/deleteItemFromCart?itemId=' + ${item.id}}">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </a>
-            </td>
+                <td th:text="${item.product.name}"></td>
+                <td th:text="${item.quantity}" ></td>
+                <td th:text="${item.product.price}" ></td>
+                <td>
+                    <a th:href="@{'/deleteItemFromCart?itemId=' + ${item.id}}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
 
-        </tr>
-        </tbody>
-    </table>
-    <div class="container-fluid">
-        <div class="row">
-            <a class="col-md-9" style="font-weight: bold"></a>
-            <a style="font-weight: bold">Summe: </a>
-            <a class="col-md-2" style="font-weight: bold" th:text="${summedPrice}+' &euro;'"></a>
+            </tr>
+            </tbody>
+        </table>
+        <div class="container-fluid">
+            <div class="row">
+                <a class="col-md-9" style="font-weight: bold"></a>
+                <a style="font-weight: bold">Summe: </a>
+                <a class="col-md-2" style="font-weight: bold" th:text="${summedPrice}+' &euro;'"></a>
+            </div>
+            <div class="row">
+                <a class="col-md-9" style="font-weight: bold"></a>
+
+                <button type="submit" class="btn btn-success" >Jetzt kostenpflichtig Bestellen</button>
+            </div>
         </div>
-        <div class="row">
-            <a class="col-md-9" style="font-weight: bold"></a>
-
-            <button type="button" class="btn btn-success" action="/sentOrder" >Jetzt kostenpflichtig Bestellen</button>
-        </div>
-    </div>
-
-
-
+    </form>
 </div>
 
 <div th:fragment="myAccount (userAccount)">
@@ -228,7 +227,9 @@
             <a class="col-md-2" style="font-weight: bold">Login Name: </a>
             <a th:text="${userAccount.loginName}"></a>
         </div>
-
+        <div class="row">
+            <a th:href="@{/orders}">Orderhistorie</a>
+        </div>
     </div>
     <br><br>
     <h4>Meine Adressen:</h4>
@@ -347,8 +348,6 @@
     </div>
 
 
-
-</div>
 
 </body>
 </html>
