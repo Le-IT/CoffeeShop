@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="fragments/header :: head">
+    <meta charset="utf-8">
+</head>
+<body>
+<div th:replace="fragments/body :: navbar (${currentUser}, ${currentCustomer})"></div>
+<br>
+<div th:replace="fragments/body :: heading ('Meine Garantien')" class="container"></div>
+
+<section class="container">
+    <div id="accordion">
+        <th:block th:each="warranty : ${warrantyList}">
+            <h4 th:text="@{'Garantie von ' + ${warranty.item.product.name}}"></h4>
+            <div>
+                <table class="table table-hover table-bordered table-sm table-cart">
+                    <thead>
+                    <tr>
+                        <th scope="col">Produkt</th>
+                        <th scope="col" style="text-align: center">Garantie g&uuml;ltig bis</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="item-row" th:each="warranty : ${warrantyList}">
+                        <td><span th:text="${warranty.item.product.name}"/></td>
+                        <td><span th:text="${warranty.endDate}" style="float: right"/></td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+    <th:block th:if="${#lists.isEmpty(warrantyList)}">
+        <p>Sie haben noch keine Garantien</p>
+    </th:block>
+</section>
+
+<!--Accordion of Warranties-->
+<script>
+    $('#accordion').accordion();
+</script>
+
+<div style="height: 65px"></div>
+<div th:include="fragments/footer :: footer" class="footer"></div>
+</body>
+</html>

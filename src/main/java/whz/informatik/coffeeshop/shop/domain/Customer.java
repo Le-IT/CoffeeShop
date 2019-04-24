@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -71,6 +72,15 @@ public class Customer extends BaseEntity<Long> {
         setLastName(lastName);
         setLoginName(loginName);
         addAddress(address);
+    }
+
+    public boolean hasWarranty(Item item, Date endDate){
+        for(Warranty warranty: warrantyList){
+            if(warranty.getEndDate()==endDate && warranty.getItem()==item){
+                return true;
+            }
+        }
+        return false;
     }
 
 

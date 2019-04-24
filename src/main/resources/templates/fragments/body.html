@@ -151,6 +151,8 @@
 <div th:fragment="myShoppingCart (actualCart,summedPrice)">
     <br>
 
+
+
     <br>
     <form action="/sentOrder">
         <table class="table table-hover table-bordered table-sm"
@@ -190,7 +192,25 @@
             <div class="row">
                 <a class="col-md-9" style="font-weight: bold"></a>
 
-                <button type="submit" class="btn btn-success" >Jetzt kostenpflichtig Bestellen</button>
+                <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#OrderedModal" >Jetzt kostenpflichtig Bestellen</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="OrderedModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Vielen Dank f&uuml;r ihre Bestellung</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -229,6 +249,9 @@
         </div>
         <div class="row">
             <a th:href="@{/orders}">Orderhistorie</a>
+        </div>
+        <div class="row">
+            <a th:href="@{/showWarranties}">Garantie-Liste</a>
         </div>
     </div>
     <br><br>

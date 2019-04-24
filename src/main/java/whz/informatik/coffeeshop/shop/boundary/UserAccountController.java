@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
 import whz.informatik.coffeeshop.shop.domain.Address;
 import whz.informatik.coffeeshop.shop.domain.Customer;
+import whz.informatik.coffeeshop.shop.domain.Warranty;
 import whz.informatik.coffeeshop.shop.service.AddressService;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
 import whz.informatik.coffeeshop.shop.service.dto.AddressDTO;
@@ -90,7 +91,17 @@ public class UserAccountController {
         String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
         return handleDeleteAddress(addressId,model);
     }
+    @RequestMapping(value= "/showWarranties")
+    public String handleShowWarranties(Model model){
+        String from = CurrentUserUtil.getCurrentUser(model);
+        String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
+        Customer customer = customerService.getByLoginName(from).get();
 
+        List<Warranty> warranties = customer.getWarrantyList();
+        model.addAttribute("warrantyList", warranties);
+
+        return "warranties";
+    }
 
 
 

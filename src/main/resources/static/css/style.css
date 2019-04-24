@@ -118,3 +118,11 @@ body {
     from {transform: scale(0)}
     to {transform: scale(1)}
 }
+
+.popup-overlay.active{
+    visibility:visible;
+}
+
+.popup-content.active {
+    visibility:visible;
+}

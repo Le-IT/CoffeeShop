@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
 import whz.informatik.coffeeshop.shop.domain.*;
-import whz.informatik.coffeeshop.shop.service.CustomerService;
-import whz.informatik.coffeeshop.shop.service.ShoppingCartService;
-import whz.informatik.coffeeshop.shop.service.ShoppingOrderService;
+import whz.informatik.coffeeshop.shop.service.*;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -31,16 +29,22 @@ public class ShoppingCartController {
     private ShoppingOrderService shoppingOrderService;
     private ShoppingCartService shoppingCartService;
     private CustomerService customerService;
+    private ProductService productService;
+    private WarrantyService warrantyService;
 
     @Autowired
     public ShoppingCartController(CurrentShoppingCart currentShoppingCart,
                                   ShoppingCartService shoppingCartService,
                                   ShoppingOrderService shoppingOrderService,
-                                  CustomerService customerService) {
+                                  ProductService productService,
+                                  CustomerService customerService,
+                                  WarrantyService warrantyService){
         this.currentShoppingCart = currentShoppingCart;
         this.shoppingCartService = shoppingCartService;
         this.shoppingOrderService = shoppingOrderService;
         this.customerService = customerService;
+        this.productService = productService;
+        this.warrantyService = warrantyService;
     }
 
     private ShoppingCart getCurrentShoppingCart(Customer customer){
@@ -113,11 +117,16 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
         ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
         shoppingCart.removeAllItems();
-        System.out.println("ShoppingCart ID: " + shoppingCart.getId());
-        System.out.println("ShoppingCart SIZE: " + shoppingCart.getItems().size());
+        for(Item item : shoppingOrder.getItems()){
+            if(item.getProduct().getProductType().isWithWarranty()){
+                warrantyService.createWarrantyForOrderedProducts(customer);
 
+            }
+        }
         return "redirect:/shoppingCart?id="+customer.getId();
     }
+
+
 
 
 
