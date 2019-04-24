@@ -105,6 +105,15 @@ public class ShoppingCartController {
         return "shoppingCart";
     }
 
+    @RequestMapping (value = "/sentOrder")
+    public String handleSentOrder(Model model){
+        String from = CurrentUserUtil.getCurrentUser(model);
+        Customer customer = customerService.getByLoginName(from).get();
+        ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
+
+
+        return "redirect:/shoppingCart?id="+customer.getId();
+    }
 
 
 

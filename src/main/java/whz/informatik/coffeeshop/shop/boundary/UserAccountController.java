@@ -50,16 +50,27 @@ public class UserAccountController {
 
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
-
         Address newAddress = addressService.createAddress(street, housenumber, zipCode, town);
-
         customer.addAddress(newAddress);
-
         customerService.updateCustomer(customer);
         String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
         return "redirect:"+url;
     }
 
+    @RequestMapping (value = "/deleteAddress", method = RequestMethod.POST)
+    public String handleAddAddress(@RequestParam long addressId, Model model){
+        System.out.println("ADDRESSID: "+ addressId);
+        String from = CurrentUserUtil.getCurrentUser(model);
+        String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
+        Customer customer = customerService.getByLoginName(from).get();
+
+        if(customer.getAddressList().size()>=1 && addressService.getById(addressId).isPresent()) {
+            Address addressToDelete = addressService.getById(addressId).get();
+            customer.removeAddress(addressToDelete);
+            customerService.updateCustomer(customer);
+        }
+        return "redirect:"+url;
+    }
 
 
 

@@ -189,7 +189,7 @@
         <div class="row">
             <a class="col-md-9" style="font-weight: bold"></a>
 
-            <button type="button" class="btn btn-success" >Jetzt kostenpflichtig Bestellen</button>
+            <button type="button" class="btn btn-success" action="/sentOrder" >Jetzt kostenpflichtig Bestellen</button>
         </div>
     </div>
 
@@ -234,16 +234,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="adress : ${userAccount.addressList}">
-
-            <td th:text="${adress.street}" />
-            <td th:text="${adress.housenumber}" />
-            <td th:text="${adress.zipCode}" />
-            <td th:text="${adress.town}" />
+        <tr th:each="address : ${userAccount.addressList}">
+            <form action="/deleteAddress" method="POST">
+                <input type="text" hidden="true" name="addressId" th:value="${address.id}"></input>
+            <td th:text="${address.street}" />
+            <td th:text="${address.housenumber}" />
+            <td th:text="${address.zipCode}" />
+            <td th:text="${address.town}" />
             <td>
-                <a >
-                    <span class="glyphicon glyphicon-trash"></span>
+                <a>
+                    <input type="submit" id="del" hidden="true"/>
+                    <span onclick="$('#del').click();" class="glyphicon glyphicon-trash"></span>
                 </a>&nbsp;&nbsp;
+             </form>
                 <a >
                     <span class="glyphicon glyphicon-refresh"></span>
                 </a>
