@@ -58,18 +58,37 @@ public class UserAccountController {
     }
 
     @RequestMapping (value = "/deleteAddress", method = RequestMethod.POST)
-    public String handleAddAddress(@RequestParam long addressId, Model model){
+    public String handleDeleteAddress(@RequestParam long addressId, Model model){
         System.out.println("ADDRESSID: "+ addressId);
         String from = CurrentUserUtil.getCurrentUser(model);
         String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
         Customer customer = customerService.getByLoginName(from).get();
-
+        for(Address address: customer.getAddressList()){
+            System.out.println(address);
+        }
         if(customer.getAddressList().size()>=1 && addressService.getById(addressId).isPresent()) {
             Address addressToDelete = addressService.getById(addressId).get();
             customer.removeAddress(addressToDelete);
             customerService.updateCustomer(customer);
         }
         return "redirect:"+url;
+    }
+
+    @RequestMapping (value = "/updateAddress", method = RequestMethod.POST)
+    public String handleUpdateAddress(@RequestParam String street,
+                                   @RequestParam String housenumber,
+                                   @RequestParam String town,
+                                   @RequestParam String zipCode,
+                                   @RequestParam long addressId,
+                                   Model model){
+
+        String from = CurrentUserUtil.getCurrentUser(model);
+        Customer customer = customerService.getByLoginName(from).get();
+        Address newAddress = addressService.createAddress(street, housenumber, zipCode, town);
+        customer.addAddress(newAddress);
+        customerService.updateCustomer(customer);
+        String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
+        return handleDeleteAddress(addressId,model);
     }
 
 
