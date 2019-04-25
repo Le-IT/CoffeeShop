@@ -81,7 +81,6 @@ public class DTOUtils {
         WarrantyDTO warrantyDTO = new WarrantyDTO();
         BeanUtils.copyProperties(warranty,warrantyDTO,"customer", "item");
         warrantyDTO.setId(warranty.getId());
-        warrantyDTO.setCustomer(DTOUtils.createDTO(warranty.getCustomer()));
         warrantyDTO.setItem(DTOUtils.createDTO(warranty.getItem()));
         return warrantyDTO;
     }
