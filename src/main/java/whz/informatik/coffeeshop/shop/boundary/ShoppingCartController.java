@@ -117,6 +117,7 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
         ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
         shoppingCart.removeAllItems();
+        shoppingCartService.update(shoppingCart);
         for(Item item : shoppingOrder.getItems()){
             if(item.getProduct().getProductType().isWithWarranty()){
                 warrantyService.createWarrantyForOrderedProducts(customer);
