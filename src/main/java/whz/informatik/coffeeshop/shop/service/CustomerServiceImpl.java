@@ -52,6 +52,14 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
+    public List<CustomerDTO> getAllOrderedDTO() {
+        List<Customer> targetListOrigin = customerRepository.findAllByOrderByLoginName();
+        List<CustomerDTO> targetList = new ArrayList<>();
+        targetListOrigin.forEach(customer -> targetList.add(DTOUtils.createDTO(customer)));
+        return targetList;
+    }
+
+    @Override
     public Optional<CustomerDTO> getDTOById(long customerId) {
         System.out.println(customerId);
         Optional<Customer> optionalCustomer = getById(customerId);

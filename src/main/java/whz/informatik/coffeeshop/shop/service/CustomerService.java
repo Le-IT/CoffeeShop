@@ -13,6 +13,7 @@ public interface CustomerService {
     Customer addCustomer(Customer customer);
 
     List<CustomerDTO> getAllDTO();
+    List<CustomerDTO> getAllOrderedDTO();
     Optional<CustomerDTO> getDTOById(long customerId);
     Optional<CustomerDTO> getDTOByLoginName(String loginName);
 
