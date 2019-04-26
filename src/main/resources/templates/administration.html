@@ -15,22 +15,25 @@
         <div class="section-title h4">Kunden</div>
         <br>
         <table class="table table-hover table-bordered table-sm"
-               th:if="${listCustomers != null}">
+               th:if="${listCustomer != null}">
             <thead class="thead-light">
             <tr>
-                <!--<th scope="col">ID</th>-->
-                <th scope="col">Vornameame</th>
-                <th scope="col">Nachnameame</th>
+                <th scope="col">KundenID</th>
+                <th scope="col">Vorname</th>
+                <th scope="col">Nachname</th>
                 <th scope="col">Login</th>
                 <th scope="col"></th>
-
 
             </tr>
             </thead>
             <tbody>
-            <tr th:each="customer : ${listCustomers}">
+            <tr th:each="customer,iterState : ${listCustomer}">
+                <td th:text="${customer.id}"/>
 
-                <td th:text="${customer.firstName}" />
+                <td>
+                <a th:href="@{'/profile?id=' + ${listUser[__${iterState.index}__].id}}" th:text="${customer.firstName}"/>
+                <td/>
+
                 <td th:text="${customer.lastName}" />
                 <td th:text="${customer.loginName}" />
                 <td>

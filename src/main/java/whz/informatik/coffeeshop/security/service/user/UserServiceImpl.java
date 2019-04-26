@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.security.domain.CustomerCreateForm;
+import whz.informatik.coffeeshop.security.domain.Role;
 import whz.informatik.coffeeshop.security.domain.User;
 import whz.informatik.coffeeshop.security.domain.UserRepository;
 import whz.informatik.coffeeshop.security.service.dto.UserDTO;
@@ -40,6 +41,15 @@ public class UserServiceImpl implements UserService {
         log.debug("Getting all users as dto");
         List<User> targetListOrigin = userRepository.findAllByOrderByLoginNameAsc();
         List<UserDTO> targetList= new ArrayList<>();
+        targetListOrigin.forEach(user -> targetList.add(DTOUtils.createDTO(user)));
+        return targetList;
+    }
+
+    @Override
+    public Collection<UserDTO> getAllUsersWithRoleDTO(Role role) {
+        log.debug("Getting all users by role={} as dto", role.name());
+        List<User> targetListOrigin = userRepository.findAllByRoleOrderByLoginNameAsc(role);
+        List<UserDTO> targetList = new ArrayList<>();
         targetListOrigin.forEach(user -> targetList.add(DTOUtils.createDTO(user)));
         return targetList;
     }
