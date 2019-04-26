@@ -9,7 +9,41 @@
 <div th:replace="fragments/body :: heading ('Nutzer-Administration')" class="container"></div>
 
 <div class="container">
-    <div th:include="fragments/body :: users_managed (${listCustomers})"></div>
+
+    <div>
+        <br>
+        <div class="section-title h4">Kunden</div>
+        <br>
+        <table class="table table-hover table-bordered table-sm"
+               th:if="${listCustomers != null}">
+            <thead class="thead-light">
+            <tr>
+                <!--<th scope="col">ID</th>-->
+                <th scope="col">Vornameame</th>
+                <th scope="col">Nachnameame</th>
+                <th scope="col">Login</th>
+                <th scope="col"></th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${listCustomers}">
+
+                <td th:text="${customer.firstName}" />
+                <td th:text="${customer.lastName}" />
+                <td th:text="${customer.loginName}" />
+                <td>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
 </div>
 
 <div style="height: 65px"></div>

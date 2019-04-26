@@ -50,6 +50,8 @@ public class UserAccountController {
 
         if(ocustomer.isPresent())
             model.addAttribute("currentCustomer", ocustomer.get());
+        else
+            return "redirect:/";
 
         return "userAccount";
     }

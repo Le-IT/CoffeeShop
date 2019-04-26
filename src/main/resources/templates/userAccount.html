@@ -9,7 +9,151 @@
 <div th:replace="fragments/body :: heading ('Mein Account')" class="container"></div>
 
 <div class="container">
-    <div th:include="fragments/body :: myAccount (${currentCustomer})"></div>
+    <div>
+        <br>
+
+        <br>
+        <script>
+            function switchView() {
+                var x = document.getElementById("update");
+                var y = document.getElementById("delete");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                    y.style.display = "none";
+                } else {
+                    x.style.display = "none";
+                    y.style.display = "block";
+                }
+            }
+        </script>
+
+        <div class="container-fluid">
+            <div class="row">
+                <a class="col-md-2" style="font-weight: bold">Name: </a>
+                <a th:text="${currentCustomer.lastName}"></a>
+            </div>
+            <div class="row">
+                <a class="col-md-2" style="font-weight: bold">Vorname: </a>
+                <a th:text="${currentCustomer.firstName}"></a>
+            </div>
+            <div class="row">
+                <a class="col-md-2" style="font-weight: bold">Login Name: </a>
+                <a th:text="${currentCustomer.loginName}"></a>
+            </div>
+        </div>
+        <br><br>
+        <h4>Meine Adressen:</h4>
+
+        <span th:each="address : ${currentCustomer.addressList}" style="width: fit-content">
+            <form action="/deleteAddress" id="delete" name="delete" method="POST">
+                <div style="background-color: cornsilk; border-radius: 1em; padding: 1.5em; width: 30em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    <div>
+                        <label>Address ID: </label>
+                        <span th:text="${address.id}"></span>
+                    </div>
+                    <div>
+                        <label>Strasse: </label>
+                        <span th:text="${address.street}"  ></span>
+                    </div>
+                    <div>
+                        <label>Hausnummer: </label>
+                        <span th:text="${address.housenumber}"  ></span>
+                    </div>
+                    <div>
+                        <label>PLZ: </label>
+                        <span th:text="${address.zipCode}"  ></span>
+                    </div>
+                    <div>
+                        <label>Stadt: </label>
+                        <span th:text="${address.town}"  ></span>
+                    </div>
+                    <hr/>
+                    <div>
+                        <a>
+                            <button type="submit" id="del"  name="addressId" th:value="${address.id}" style="background: none; border: none;">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+
+                        </a>&nbsp;&nbsp;
+
+                        <a >
+                            <button type="button" style="background: none; border: none;" onclick="switchView()" class="glyphicon glyphicon-refresh"></button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <form action="/updateAddress" id="update" name="update" method="POST" style="display: none;" >
+                <div style="background-color: cornsilk; border-radius: 1em; padding: 1.5em; width: 30em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    <div>
+                        <label style="width: 7.5em">Address ID: </label>
+                        <span th:text="${address.id}"></span>
+                        <input type="text" name="addressId" th:value="${address.id}" hidden="true"/>
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">Strasse: </label>
+                        <input type="text" name="street" th:value="${address.street}"/>
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">Hausnummer: </label>
+                        <input type="text" name="housenumber" th:value="${address.housenumber}"/>
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">PLZ: </label>
+                        <input type="text" name="zipCode" th:value="${address.zipCode}" />
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">Stadt: </label>
+                        <input type="text" name="town" th:value="${address.town}"/>
+                    </div>
+                    <hr/>
+                    <div>
+                        <a>
+                            <button type="submit" id="ref"  name="refresh" th:value="${address.id}" style="background: none; border: none;">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+
+                        </a>&nbsp;&nbsp;
+
+                        <a >
+                            <button type="button" style="background: none; border: none;" onclick="switchView()" class=" glyphicon glyphicon-chevron-left "></button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <br>
+        </span>
+        <div>
+            <form action="/addAdress" method="POST">
+                <div style="background-color: cornsilk; border-radius: 1em; padding: 1.5em; width: 30em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    <div>
+                        <label style="width: 7.5em">Strasse: </label>
+                        <input type="text" name="street" />
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">Hausnummer: </label>
+                        <input type="text" name="housenumber" />
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">PLZ: </label>
+                        <input type="text" name="zipCode" />
+                    </div>
+                    <div>
+                        <label style="width: 7.5em">Stadt: </label>
+                        <input type="text" name="town" />
+                    </div>
+                    <hr/>
+                    <div>
+                        <a>
+                             <input type="submit" id="subm" hidden="true"/>
+                        <span onclick="$('#subm').click();" class="glyphicon glyphicon-plus"></span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div style="height: 65px"></div>
