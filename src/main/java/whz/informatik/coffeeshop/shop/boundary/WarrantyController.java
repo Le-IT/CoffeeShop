@@ -5,17 +5,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Item;
 import whz.informatik.coffeeshop.shop.domain.ShoppingOrder;
-import whz.informatik.coffeeshop.shop.domain.Warranty;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
 import whz.informatik.coffeeshop.shop.service.ShoppingOrderService;
 import whz.informatik.coffeeshop.shop.service.WarrantyService;
+import whz.informatik.coffeeshop.shop.service.dto.WarrantyDTO;
 
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class WarrantyController {
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
 
-        List<Warranty> warranties = customer.getWarrantyList();
+        List<WarrantyDTO> warranties = warrantyService.getWarrantysDTOByCustomer(customer);
         model.addAttribute("warrantyList", warranties);
 
         model.addAttribute("currentCustomer", customer);
