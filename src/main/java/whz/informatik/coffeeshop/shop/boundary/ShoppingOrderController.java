@@ -48,9 +48,9 @@ public class ShoppingOrderController {
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartsByCustomer(customer).get(0);
         ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
 
+        currentShoppingCart.setShoppingCart(null);
         shoppingCart.removeAllItems();
         shoppingCartService.update(shoppingCart);
-        currentShoppingCart.setShoppingCart(shoppingCart);
 
         return "forward:/warranties/setup?orderId=" + shoppingOrder.getId();
     }

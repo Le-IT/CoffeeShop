@@ -66,9 +66,6 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
         Item item = shoppingCartService.createItem(productId,amount);
 
-        // FIXME: Error occuring just sometimes
-        // org.h2.jdbc.JdbcSQLException: Unique index or primary key violation: "UK_LN84YLB54V72DT5HXFTRTAS48_INDEX_C ON PUBLIC.SHOPPING_CART_ITEMS(ITEMS_ID) VALUES (23, 7)"; SQL statement:
-        //insert into shopping_cart_items (shopping_cart_id, items_id) values (?, ?) [23505-197]
         shoppingCartService.addItemToCart(shoppingCart, item);
 
         return "redirect:/";
