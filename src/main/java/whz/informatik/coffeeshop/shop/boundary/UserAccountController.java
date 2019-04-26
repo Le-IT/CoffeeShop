@@ -123,21 +123,6 @@ public class UserAccountController {
         return handleDeleteAddress(addressId,model);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value= "/showWarranties")
-    public String handleShowWarranties(Model model){
-        String from = CurrentUserUtil.getCurrentUser(model);
-        String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
-        Customer customer = customerService.getByLoginName(from).get();
-
-        List<Warranty> warranties = customer.getWarrantyList();
-        model.addAttribute("warrantyList", warranties);
-
-        model.addAttribute("currentCustomer", customer);
-        return "warranties";
-    }
-
-
     @RequestMapping(value = "/users/create", method = RequestMethod.POST)
     public RedirectView handleUserCreateForm(@Valid @ModelAttribute("newCustomerForm") CustomerCreateForm form, BindingResult bindingResult,
                                              HttpServletRequest request, RedirectAttributes redir) {

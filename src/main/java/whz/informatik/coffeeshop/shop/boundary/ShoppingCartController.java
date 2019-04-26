@@ -27,25 +27,16 @@ public class ShoppingCartController {
     private Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
 
     private CurrentShoppingCart currentShoppingCart;
-    private ShoppingOrderService shoppingOrderService;
     private ShoppingCartService shoppingCartService;
     private CustomerService customerService;
-    private ProductService productService;
-    private WarrantyService warrantyService;
 
     @Autowired
     public ShoppingCartController(CurrentShoppingCart currentShoppingCart,
                                   ShoppingCartService shoppingCartService,
-                                  ShoppingOrderService shoppingOrderService,
-                                  ProductService productService,
-                                  CustomerService customerService,
-                                  WarrantyService warrantyService){
+                                  CustomerService customerService) {
         this.currentShoppingCart = currentShoppingCart;
         this.shoppingCartService = shoppingCartService;
-        this.shoppingOrderService = shoppingOrderService;
         this.customerService = customerService;
-        this.productService = productService;
-        this.warrantyService = warrantyService;
     }
 
     private ShoppingCart getCurrentShoppingCart(Customer customer){
@@ -75,6 +66,9 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
         Item item = shoppingCartService.createItem(productId,amount);
 
+        // FIXME: Error occuring just sometimes
+        // org.h2.jdbc.JdbcSQLException: Unique index or primary key violation: "UK_LN84YLB54V72DT5HXFTRTAS48_INDEX_C ON PUBLIC.SHOPPING_CART_ITEMS(ITEMS_ID) VALUES (23, 7)"; SQL statement:
+        //insert into shopping_cart_items (shopping_cart_id, items_id) values (?, ?) [23505-197]
         shoppingCartService.addItemToCart(shoppingCart, item);
 
         return "redirect:/";
@@ -111,24 +105,6 @@ public class ShoppingCartController {
         return "shoppingCart";
     }
 
-    @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping (value = "/sentOrder")
-    public String handleSentOrder(Model model){
-        String from = CurrentUserUtil.getCurrentUser(model);
-        Customer customer = customerService.getByLoginName(from).get();
-        ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
-        ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
 
-        shoppingCart.removeAllItems();
-        shoppingCartService.update(shoppingCart);
-
-        for(Item item : shoppingOrder.getItems()){
-            if(item.getProduct().getProductType().isWithWarranty()){
-                warrantyService.createWarrantyForOrderedProducts(customer);
-
-            }
-        }
-        return "redirect:/profile";
-    }
 
 }

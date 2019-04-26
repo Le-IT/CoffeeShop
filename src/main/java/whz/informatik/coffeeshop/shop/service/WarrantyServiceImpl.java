@@ -40,26 +40,19 @@ public class WarrantyServiceImpl implements WarrantyService{
         return warrantyRepository.findById(warrentyId);
     }
 
-    // FIXME
     @Override
-    public Warranty createWarrantyForOrderedProducts(Customer customer) {
+    public Warranty warrantProduct(Item item, Customer customer) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR,2);
         Date endDate = cal.getTime();
-        for(ShoppingOrder shoppingOrder: customer.getOrders()){
-           for(Item item: shoppingOrder.getItems()){
-               if(item.getProduct().getProductType().isWithWarranty() && !customer.hasWarranty(item,endDate)){
-                   Warranty warranty = new Warranty();
-                   warranty.setup(endDate,item,customer);
-                   warrantyRepository.save(warranty);
-                   customer.getWarrantyList().add(warranty);
-                   update(warranty);
-                   customerService.updateCustomer(customer);
-                   System.out.println("Groesse WarrantyListCustomer"+customer.getWarrantyList().size());
-               }
-           }
-        }
-        return null;
+
+        Warranty warranty = new Warranty();
+        warranty.setup(endDate,item,customer);
+        warrantyRepository.save(warranty);
+        customer.getWarrantyList().add(warranty);
+        customerService.updateCustomer(customer);
+
+        return warranty;
     }
 
     @Override

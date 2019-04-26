@@ -107,11 +107,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public void addItemToCart(long shoppingCartId, Item item) {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
-        System.err.println(shoppingCartId);
-        if(shoppingCartOptional.isPresent()) {
+        if(shoppingCartOptional.isPresent())
             addItemToCart(shoppingCartOptional.get(),item);
-            shoppingCartRepository.save(shoppingCartOptional.get());
-        }
     }
 
     @Override
@@ -126,11 +123,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void clearCart(long shoppingCartId) {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
 
-        if(shoppingCartOptional.isPresent()) {
+        if(shoppingCartOptional.isPresent())
             shoppingCartOptional.get().removeAllItems();
-//            update(shoppingCartOptional.get());
-        }
-
     }
 
     @Override

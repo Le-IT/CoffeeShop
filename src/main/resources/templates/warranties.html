@@ -22,10 +22,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="item-row" th:each="warranty : ${warrantyList}">
+                    <tr class="item-row">
                         <td><span th:text="${warranty.item.product.name}"/></td>
                         <td><span th:text="${warranty.endDate}" style="float: right"/></td>
-
                     </tr>
 
                     </tbody>

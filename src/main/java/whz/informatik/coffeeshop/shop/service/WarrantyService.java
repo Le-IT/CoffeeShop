@@ -3,6 +3,7 @@ package whz.informatik.coffeeshop.shop.service;
 
 
 import whz.informatik.coffeeshop.shop.domain.Customer;
+import whz.informatik.coffeeshop.shop.domain.Item;
 import whz.informatik.coffeeshop.shop.domain.Warranty;
 import whz.informatik.coffeeshop.shop.service.dto.WarrantyDTO;
 
@@ -14,7 +15,7 @@ public interface WarrantyService {
 
     Optional<Warranty> getWarrantyById(long warrentyId);
 
-    Warranty createWarrantyForOrderedProducts(Customer customer);
+    Warranty warrantProduct(Item item, Customer customer);
 
     List<Warranty> getWarrantysByCustomer(Customer customer);
 
