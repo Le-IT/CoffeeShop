@@ -1,5 +1,6 @@
 package whz.informatik.coffeeshop.shop.service;
 
+import whz.informatik.coffeeshop.security.domain.CustomerCreateForm;
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
 
@@ -29,4 +30,7 @@ public interface CustomerService {
     void removeCustomerById(long customerId);
     boolean existsWithLoginName(String loginName);
     boolean existsWithId(long customerId);
+
+    void createCustomer(CustomerCreateForm form);
+
 }

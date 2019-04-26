@@ -1,9 +1,15 @@
 package whz.informatik.coffeeshop.shop.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whz.informatik.coffeeshop.common.DTOUtils;
+import whz.informatik.coffeeshop.security.domain.CustomerCreateForm;
+import whz.informatik.coffeeshop.shop.domain.Address;
 import whz.informatik.coffeeshop.shop.domain.Customer;
+import whz.informatik.coffeeshop.shop.domain.repository.AddressRepository;
 import whz.informatik.coffeeshop.shop.domain.repository.CustomerRepository;
 import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
 
@@ -13,13 +19,17 @@ import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
+    private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     private CustomerRepository customerRepository;
+    private AddressRepository addressRepository;
 
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository,
+                               AddressRepository addressRepository) {
         this.customerRepository = customerRepository;
+        this.addressRepository = addressRepository;
     }
 
 
@@ -109,5 +119,28 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public boolean existsWithId(long customerId) {
         return customerRepository.existsById(customerId);
+    }
+
+    @Transactional
+    @Override
+    public void createCustomer(CustomerCreateForm form) {
+        log.info("Creating customer with loginName=" + form.getLoginName());
+
+        Address address = new Address();
+        address.setStreet(form.getStreet());
+        address.setHousenumber(form.getHousenumber());
+        address.setZipCode(form.getZipCode());
+        address.setTown(form.getTown());
+
+        addressRepository.save(address);
+
+        Customer customer = new Customer();
+        customer.setLoginName(form.getLoginName());
+        customer.setFirstName(form.getFirstName());
+        customer.setLastName(form.getLastName());
+
+        customer.addAddress(address);
+
+        customerRepository.save(customer);
     }
 }
