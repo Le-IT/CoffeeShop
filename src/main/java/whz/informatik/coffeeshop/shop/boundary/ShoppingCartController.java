@@ -5,6 +5,7 @@ import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class ShoppingCartController {
     }
 
 
-
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/addToCart", method = RequestMethod.POST)
     public String handleAddItem(@RequestParam Long productId, @RequestParam int amount, Model model){
         String from = CurrentUserUtil.getCurrentUser(model);
@@ -74,14 +75,12 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
         Item item = shoppingCartService.createItem(productId,amount);
 
-        if(shoppingCart.addItem(item))
-            shoppingCartService.deleteItem(item);
-
-        shoppingCartService.update(shoppingCart);
+        shoppingCartService.addItemToCart(shoppingCart, item);
 
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/deleteItemFromCart")
     public String handleDeleteItem(@RequestParam long itemId, Model model){
         String from = CurrentUserUtil.getCurrentUser(model);
@@ -98,6 +97,8 @@ public class ShoppingCartController {
         return "redirect:/shoppingCart?id="+customer.getId();
     }
 
+    // TODO remove unused param
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "shoppingCart")
     public String handleShoppingCart(@RequestParam(value="id") int cartId, Model model ){
         String from = CurrentUserUtil.getCurrentUser(model);
@@ -110,6 +111,7 @@ public class ShoppingCartController {
         return "shoppingCart";
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/sentOrder")
     public String handleSentOrder(Model model){
         String from = CurrentUserUtil.getCurrentUser(model);

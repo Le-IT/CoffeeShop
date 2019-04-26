@@ -54,7 +54,7 @@ public class ShoppingCart extends BaseEntity<Long> {
         return false;
     }
     public void addAllItems(Collection<Item> items) {
-        items.addAll(items);
+        items.forEach(item -> addItem(item));
     }
     public void removeItem(Item item) {
         items.remove(item);

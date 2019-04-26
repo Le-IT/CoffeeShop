@@ -2,6 +2,7 @@ package whz.informatik.coffeeshop.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Item;
@@ -67,6 +68,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCart createShoppingCartForCustomer(Customer customer) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setup(Date.from(Instant.now()),customer);
@@ -74,6 +76,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCart createShoppingCartForCustomerWithId(long customerId) {
         Optional<Customer> optionalCustomer = customerService.getById(customerId);
 
@@ -93,6 +96,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCart update(ShoppingCart shoppingCart) {
         if(shoppingCartRepository.existsById(shoppingCart.getId()))
             return shoppingCartRepository.save(shoppingCart);
@@ -100,31 +104,37 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public void addItemToCart(long shoppingCartId, Item item) {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
-
-        if(shoppingCartOptional.isPresent())
+        System.err.println(shoppingCartId);
+        if(shoppingCartOptional.isPresent()) {
             addItemToCart(shoppingCartOptional.get(),item);
+            shoppingCartRepository.save(shoppingCartOptional.get());
+        }
     }
+
     @Override
+    @Transactional
+    public void addItemToCart(ShoppingCart shoppingCart, Item item) {
+        shoppingCart.addItem(item);
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Override
+    @Transactional
     public void clearCart(long shoppingCartId) {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
 
         if(shoppingCartOptional.isPresent()) {
             shoppingCartOptional.get().removeAllItems();
-            update(shoppingCartOptional.get());
+//            update(shoppingCartOptional.get());
         }
+
     }
 
     @Override
-    public void addItemToCart(ShoppingCart shoppingCart, Item item) {
-        shoppingCart.addItem(item);
-        update(shoppingCart);
-    }
-
-
-
-    @Override
+    @Transactional
     public void addAllItemsToCart(long shoppingCartId, Collection<Item> items) {
         Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
 
@@ -133,9 +143,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public void addAllItemsToCart(ShoppingCart shoppingCart, Collection<Item> items) {
         shoppingCart.addAllItems(items);
-        update(shoppingCart);
+        shoppingCartRepository.save(shoppingCart);
     }
 
     @Override
@@ -144,12 +155,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(Item item) {
         if(itemRepository.existsById(item.getId()))
             itemRepository.delete(item);
     }
 
     @Override
+    @Transactional
     public Item createItem(long productId, int amount) {
         Product product = productService.getById(productId).get();
         Item item = new Item();
