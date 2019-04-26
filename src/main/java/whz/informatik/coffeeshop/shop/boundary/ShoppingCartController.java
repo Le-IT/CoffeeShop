@@ -117,20 +117,17 @@ public class ShoppingCartController {
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
         ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
+
         shoppingCart.removeAllItems();
         shoppingCartService.update(shoppingCart);
+
         for(Item item : shoppingOrder.getItems()){
             if(item.getProduct().getProductType().isWithWarranty()){
                 warrantyService.createWarrantyForOrderedProducts(customer);
 
             }
         }
-        return "redirect:/shoppingCart?id="+customer.getId();
+        return "redirect:/profile";
     }
-
-
-
-
-
 
 }

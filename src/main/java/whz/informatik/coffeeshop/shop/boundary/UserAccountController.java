@@ -4,6 +4,7 @@ package whz.informatik.coffeeshop.shop.boundary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +35,17 @@ public class UserAccountController {
         this.addressService = addressService;
     }
 
+    @PreAuthorize("#id == principal.id or hasAuthority('ADMIN')")
     @RequestMapping(value = {"/profile"})
     public String showAccountPage(@RequestParam("id") long userId, Model model) {
+        // TODO get profile by id!
         String username = CurrentUserUtil.getCurrentUser(model);
         CustomerDTO customer = customerService.getDTOByLoginName(username).get();
         model.addAttribute("currentCustomer", customer);
         return "userAccount";
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/addAdress", method = RequestMethod.POST)
     public String handleAddAddress(@RequestParam String street,
                                 @RequestParam String housenumber,
@@ -58,6 +62,7 @@ public class UserAccountController {
         return "redirect:"+url;
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/deleteAddress", method = RequestMethod.POST)
     public String handleDeleteAddress(@RequestParam long addressId, Model model){
         System.out.println("ADDRESSID: "+ addressId);
@@ -75,6 +80,8 @@ public class UserAccountController {
         return "redirect:"+url;
     }
 
+    // TODO update the object instead of delete/create
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/updateAddress", method = RequestMethod.POST)
     public String handleUpdateAddress(@RequestParam String street,
                                    @RequestParam String housenumber,
@@ -91,6 +98,8 @@ public class UserAccountController {
         String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
         return handleDeleteAddress(addressId,model);
     }
+
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value= "/showWarranties")
     public String handleShowWarranties(Model model){
         String from = CurrentUserUtil.getCurrentUser(model);
