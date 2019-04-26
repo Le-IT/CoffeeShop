@@ -20,15 +20,12 @@ import whz.informatik.coffeeshop.security.service.dto.UserDTO;
 import whz.informatik.coffeeshop.security.service.user.UserService;
 import whz.informatik.coffeeshop.shop.domain.Address;
 import whz.informatik.coffeeshop.shop.domain.Customer;
-import whz.informatik.coffeeshop.shop.domain.Warranty;
 import whz.informatik.coffeeshop.shop.service.AddressService;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
-import whz.informatik.coffeeshop.shop.service.dto.AddressDTO;
 import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -66,7 +63,7 @@ public class UserAccountController {
         if (user.getId() != fromid)
             model.addAttribute("userid", user.getId());
 
-        return "userAccount";
+        return "profile";
     }
 
     @PreAuthorize("hasAuthority('USER')")

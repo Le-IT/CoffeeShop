@@ -4,8 +4,9 @@
     <meta charset="utf-8">
 </head>
 <body>
+<div th:replace="fragments/body :: navbar (${currentUser}, ${currentCustomer})"></div>
 <br>
-<div th:replace="fragments/body :: heading (txt='Willkommen bei CoffeeShop')"></div>
+<div th:replace="fragments/body :: heading ('Willkommen bei CoffeeShop')" class="container"></div>
 <br>
 <div class="container">
     <div class="col-md-6  offset-md-3">

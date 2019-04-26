@@ -9,16 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import whz.informatik.coffeeshop.security.domain.Role;
-import whz.informatik.coffeeshop.security.domain.User;
-import whz.informatik.coffeeshop.security.service.dto.UserDTO;
 import whz.informatik.coffeeshop.security.service.user.UserService;
-import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
-import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AdministrationController {
@@ -40,6 +32,6 @@ public class AdministrationController {
     public String getAdministrationPage(Model model) {
         model.addAttribute("listUser", userService.getAllUsersWithRoleDTO(Role.USER));
         model.addAttribute("listCustomer", customerService.getAllDTO());
-        return "administration";
+        return "users_managed";
     }
 }

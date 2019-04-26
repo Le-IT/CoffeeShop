@@ -4,6 +4,7 @@
 <div th:fragment="navbar (currentUser, currentCustomer)">
     <div style="padding: 5px 10px">
         <div class="topnav">
+            <a href="/">Hauptseite</a>
             <th:block th:if="${currentUser}">
                 <a th:if="${isAdmin}" th:href="@{/users_managed}" style="float: left">
                     Nutzer Administration

@@ -5,6 +5,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
 import whz.informatik.coffeeshop.shop.domain.*;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
@@ -41,11 +43,11 @@ public class ShoppingOrderController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping (value = "/sentOrder")
+    @RequestMapping(value = "/sentOrder")
     public String handleSentOrder(Model model){
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartsByCustomer(customer).get(0);
+        ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
         ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
 
         currentShoppingCart.setShoppingCart(null);
@@ -53,6 +55,20 @@ public class ShoppingOrderController {
         shoppingCartService.update(shoppingCart);
 
         return "forward:/warranties/setup?orderId=" + shoppingOrder.getId();
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @RequestMapping(value = "/templateOrder", method = RequestMethod.POST)
+    public String handleTemplateOrder(Model model, @RequestParam Long orderId) {
+        String from = CurrentUserUtil.getCurrentUser(model);
+        Customer customer = customerService.getByLoginName(from).get();
+        ShoppingOrder shoppingOrder = shoppingOrderService.getShoppingOrderById(orderId).get();
+        ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
+
+        // TODO shoppingOrder >> shoppingCart
+        // update shoppingCart
+
+        return "forward:/shoppingCart";
     }
 
 }
