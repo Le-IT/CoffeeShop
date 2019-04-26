@@ -81,19 +81,18 @@ body {
 
 /* Modal Content/Box */
 .modal-content {
-    display: block;
+    display: inline-block;
     background-color: #e8e8e8;
+    width: auto;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     border-radius: 5px;
-    width: auto;
 }
 
 /* The Close Button (x) */
 .close {
-    float: right;
     color: black;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
 }
 
