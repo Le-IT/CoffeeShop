@@ -13,6 +13,9 @@ import whz.informatik.coffeeshop.shop.service.CustomerService;
 import whz.informatik.coffeeshop.shop.service.ShoppingCartService;
 import whz.informatik.coffeeshop.shop.service.ShoppingOrderService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class ShoppingOrderController {
 
@@ -59,14 +62,23 @@ public class ShoppingOrderController {
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/templateOrder", method = RequestMethod.POST)
-    public String handleTemplateOrder(Model model, @RequestParam Long orderId) {
-        String from = CurrentUserUtil.getCurrentUser(model);
-        Customer customer = customerService.getByLoginName(from).get();
-        ShoppingOrder shoppingOrder = shoppingOrderService.getShoppingOrderById(orderId).get();
+    public String handleTemplateOrder(Model model, @RequestParam Long orderid) {
+        CurrentUserUtil.getCurrentUser(model);
+        ShoppingOrder shoppingOrder = shoppingOrderService.getShoppingOrderById(orderid).get();
         ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
 
-        // TODO shoppingOrder >> shoppingCart
-        // update shoppingCart
+//        currentShoppingCart.setShoppingCart(null);
+//        shoppingCart.removeAllItems();
+//
+//        List<Item> copies = new ArrayList<>();
+//        shoppingOrder.getItems().forEach(item -> {
+//            Item it = new Item();
+//            item.setup(item.getQuantity(), item.getProduct());
+//            copies.add(it);
+//        });
+//
+//        shoppingCartService.addAllItemsToCart(shoppingCart, copies);
+//        shoppingCartService.update(shoppingCart);
 
         return "forward:/shoppingCart";
     }

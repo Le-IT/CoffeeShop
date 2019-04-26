@@ -144,11 +144,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void deleteProductFromCart(ShoppingCart shoppingCart, Product product) {
-        //ToDo
-    }
-
-    @Override
     @Transactional
     public void deleteItem(Item item) {
         if(itemRepository.existsById(item.getId()))
