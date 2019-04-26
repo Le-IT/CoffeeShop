@@ -40,6 +40,13 @@
                 <a class="col-md-2" style="font-weight: bold">Login Name: </a>
                 <a th:text="${currentCustomer.loginName}"></a>
             </div>
+            <br>
+            <div class="row">
+                <form action="/users/delete" onsubmit="return confirm('Wirklich unwiderruflich l&ouml;schen?');" method="post">
+                    <input name="userid" type="hidden" th:value="${userid}"/>
+                    <input type="submit" class="btn btn-danger" style="float:right;" value="Account L&ouml;schen"/>
+                </form>
+            </div>
         </div>
         <br><br>
         <h4>Meine Adressen:</h4>

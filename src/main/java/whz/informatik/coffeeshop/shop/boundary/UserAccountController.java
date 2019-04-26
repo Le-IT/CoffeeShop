@@ -52,6 +52,8 @@ public class UserAccountController {
     @PreAuthorize("#userId == principal.id or hasAuthority('ADMIN')")
     @RequestMapping(value = {"/profile"})
     public String showAccountPage(@RequestParam("id") long userId, Model model) {
+        long fromid = CurrentUserUtil.getCurrentUserId(model);
+
         UserDTO user = userService.getUserDTOById(userId);
         Optional<CustomerDTO> ocustomer = customerService.getDTOByLoginName(user.getLoginName());
 
@@ -59,6 +61,10 @@ public class UserAccountController {
             model.addAttribute("currentCustomer", ocustomer.get());
         else
             return "redirect:/";
+
+
+        if (user.getId() != fromid)
+            model.addAttribute("userid", user.getId());
 
         return "userAccount";
     }
@@ -156,5 +162,30 @@ public class UserAccountController {
             rv.setUrl("/login");
         }
         return rv;
+    }
+
+    @PreAuthorize("#userid == principal.id or hasAuthority('ADMIN')")
+    @RequestMapping(value = "/users/delete", method = RequestMethod.POST)
+    public String handleUserDelete(@RequestParam Long userid, Model model) {
+        String from = CurrentUserUtil.getCurrentUser(model);
+        log.debug("Processing user delete request on user with id=" + userid);
+        UserDTO userDTO = userService.getUserDTOById(userid);
+        boolean isAdmin = model.asMap().containsKey("isAdmin") ? (boolean) model.asMap().get("isAdmin") : false;
+        if(userDTO.getLoginName().equals(from) && isAdmin) {
+            log.info("User delete request denied, admins can't be deleted (not even by their own(at least not in this way))");
+            return "redirect:/users_managed";
+        }
+        Optional<Customer> customer = customerService.getByLoginName(userDTO.getLoginName());
+        if(customer.isPresent()) {
+            log.debug("Deleting Customer with id=" + customer.get().getId());
+            customerService.removeCustomer(customer.get());
+        }
+        userService.deleteById(userid);
+        log.debug("User deleted with id=" + userid);
+        if(from == userDTO.getLoginName()) {
+            log.debug("Logged out");
+            return "redirect:/logout";
+        }
+        return "redirect:/users_managed";
     }
 }

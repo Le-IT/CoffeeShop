@@ -5,17 +5,17 @@
     <div style="padding: 5px 10px">
         <div class="topnav">
             <th:block th:if="${currentUser}">
-                <a th:if="${currentUser.role == T(whz.informatik.coffeeshop.security.domain.Role).ADMIN}" th:href="@{/users_managed}" style="float: left">
+                <a th:if="${isAdmin}" th:href="@{/users_managed}" style="float: left">
                     Nutzer Administration
                 </a>
             </th:block>
             <div class="topnav-right">
                 <th:block th:if="${currentUser}">
-                    <th:block th:if="${currentCustomer}">
+                    <th:block th:if="${currentCustomer != null and currentUser.loginName == currentCustomer.loginName}">
                         <a href="/shoppingCart">Warenkorb</a>
                         <a href="/orders">Bestellungen</a>
                         <a href="/showWarranties">Garantien</a>
-                        <a th:href="@{'/profile?id=' + ${currentUser.id}}" th:text="${'Profil: ' + currentUser.loginName}"/>
+                        <a th:href="@{'/profile?id=' + ${currentUser.id}}" th:text="${'Profil: ' + userFrom}"/>
                     </th:block>
                     <a href="/logout">Logout</a>
                 </th:block>

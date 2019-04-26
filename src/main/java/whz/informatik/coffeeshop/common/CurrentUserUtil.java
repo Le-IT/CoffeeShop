@@ -19,7 +19,9 @@ public class CurrentUserUtil {
         CurrentUser currentUser = (CurrentUser) model.asMap().get("currentUser");
         if(currentUser == null || currentUser.getUser() == null) return 0;
         Long currentUserId = currentUser.getId();
-
+        model.addAttribute("userFrom", currentUser.getLoginName());
+        if(currentUser.getRole() == Role.ADMIN)
+            model.addAttribute("isAdmin",true);
         return currentUserId;
     }
 }
