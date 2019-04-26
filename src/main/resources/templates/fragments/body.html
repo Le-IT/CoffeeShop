@@ -12,7 +12,7 @@
             <div class="topnav-right">
                 <th:block th:if="${currentUser}">
                     <th:block th:if="${currentCustomer}">
-                        <a th:href="@{'/shoppingCart?id=' + ${currentCustomer.id}}">Warenkorb</a>
+                        <a href="/shoppingCart">Warenkorb</a>
                         <a th:href="@{'/profile?id=' + ${currentUser.id}}" th:text="${'Profile: ' + currentUser.loginName}"/>
                     </th:block>
                     <a href="/logout">Logout</a>

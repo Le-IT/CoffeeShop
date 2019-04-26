@@ -97,10 +97,9 @@ public class ShoppingCartController {
         return "redirect:/shoppingCart?id="+customer.getId();
     }
 
-    // TODO remove unused param
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "shoppingCart")
-    public String handleShoppingCart(@RequestParam(value="id") int cartId, Model model ){
+    public String handleShoppingCart(Model model ){
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
