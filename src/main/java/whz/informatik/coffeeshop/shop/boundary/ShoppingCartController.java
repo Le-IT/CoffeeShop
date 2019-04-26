@@ -107,6 +107,7 @@ public class ShoppingCartController {
         model.addAttribute("actualCart", shoppingCart);
         model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
 
+        model.addAttribute("currentCustomer", customer);
         return "shoppingCart";
     }
 

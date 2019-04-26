@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
+import whz.informatik.coffeeshop.security.service.dto.UserDTO;
+import whz.informatik.coffeeshop.security.service.user.UserService;
 import whz.informatik.coffeeshop.shop.domain.Address;
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Warranty;
@@ -20,28 +22,35 @@ import whz.informatik.coffeeshop.shop.service.dto.AddressDTO;
 import whz.informatik.coffeeshop.shop.service.dto.CustomerDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserAccountController {
 
     private Logger log = LoggerFactory.getLogger(UserAccountController.class);
 
+    private UserService userService;
     private CustomerService customerService;
     private AddressService addressService;
 
     @Autowired
-    public UserAccountController(CustomerService customerService, AddressService addressService) {
+    public UserAccountController(UserService userService,
+                                 CustomerService customerService,
+                                 AddressService addressService) {
+        this.userService = userService;
         this.customerService = customerService;
         this.addressService = addressService;
     }
 
-    @PreAuthorize("#id == principal.id or hasAuthority('ADMIN')")
+    @PreAuthorize("#userId == principal.id or hasAuthority('ADMIN')")
     @RequestMapping(value = {"/profile"})
     public String showAccountPage(@RequestParam("id") long userId, Model model) {
-        // TODO get profile by id!
-        String username = CurrentUserUtil.getCurrentUser(model);
-        CustomerDTO customer = customerService.getDTOByLoginName(username).get();
-        model.addAttribute("currentCustomer", customer);
+        UserDTO user = userService.getUserDTOById(userId);
+        Optional<CustomerDTO> ocustomer = customerService.getDTOByLoginName(user.getLoginName());
+
+        if(ocustomer.isPresent())
+            model.addAttribute("currentCustomer", ocustomer.get());
+
         return "userAccount";
     }
 
@@ -109,6 +118,7 @@ public class UserAccountController {
         List<Warranty> warranties = customer.getWarrantyList();
         model.addAttribute("warrantyList", warranties);
 
+        model.addAttribute("currentCustomer", customer);
         return "warranties";
     }
 

@@ -13,7 +13,9 @@
                 <th:block th:if="${currentUser}">
                     <th:block th:if="${currentCustomer}">
                         <a href="/shoppingCart">Warenkorb</a>
-                        <a th:href="@{'/profile?id=' + ${currentUser.id}}" th:text="${'Profile: ' + currentUser.loginName}"/>
+                        <a href="/orders">Bestellungen</a>
+                        <a href="/showWarranties">Garantien</a>
+                        <a th:href="@{'/profile?id=' + ${currentUser.id}}" th:text="${'Profil: ' + currentUser.loginName}"/>
                     </th:block>
                     <a href="/logout">Logout</a>
                 </th:block>
@@ -149,10 +151,8 @@
 </div>
 
 <div th:fragment="myShoppingCart (actualCart,summedPrice)">
+    <th:block th:if="${not #lists.isEmpty(actualCart.items)}">
     <br>
-
-
-
     <br>
     <form action="/sentOrder">
         <table class="table table-hover table-bordered table-sm"
@@ -214,6 +214,10 @@
             </div>
         </div>
     </form>
+    </th:block>
+    <th:block th:unless="${not #lists.isEmpty(actualCart.items)}">
+        Ihr Warenkorb ist leer
+    </th:block>
 </div>
 
 <div th:fragment="myAccount (userAccount)">
@@ -246,12 +250,6 @@
         <div class="row">
             <a class="col-md-2" style="font-weight: bold">Login Name: </a>
             <a th:text="${userAccount.loginName}"></a>
-        </div>
-        <div class="row">
-            <a th:href="@{/orders}">Orderhistorie</a>
-        </div>
-        <div class="row">
-            <a th:href="@{/showWarranties}">Garantie-Liste</a>
         </div>
     </div>
     <br><br>
