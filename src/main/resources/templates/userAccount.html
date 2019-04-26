@@ -75,7 +75,7 @@
                         <span th:text="${address.town}"  ></span>
                     </div>
                     <hr/>
-                    <div th:unless="isAdmin">
+                    <div th:if="${currentUser.loginName} == ${currentCustomer.loginName}">
                         <a>
                             <button type="submit" id="del"  name="addressId" th:value="${address.id}" style="background: none; border: none;">
                                 <span class="glyphicon glyphicon-trash"></span>
@@ -90,7 +90,7 @@
                 </div>
             </form>
 
-            <form th:unless="isAdmin" action="/updateAddress" id="update" name="update" method="POST" style="display: none;">
+            <form th:if="${currentUser.loginName} == ${currentCustomer.loginName}" action="/updateAddress" id="update" name="update" method="POST" style="display: none;">
                 <div style="background-color: cornsilk; border-radius: 1em; padding: 1.5em; width: 30em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                     <div>
                         <label style="width: 7.5em">Address ID: </label>
@@ -131,7 +131,7 @@
 
             <br>
         </span>
-        <div th:unless="isAdmin">
+        <div th:if="${currentUser.loginName} == ${currentCustomer.loginName}">
             <form action="/addAdress" method="POST">
                 <div style="background-color: cornsilk; border-radius: 1em; padding: 1.5em; width: 30em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                     <div>
