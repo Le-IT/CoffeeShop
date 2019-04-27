@@ -10,6 +10,7 @@
 
 <div class="container">
     <div>
+        <th:block th:if="${actualCart}">
         <th:block th:if="${not #lists.isEmpty(actualCart.items)}">
             <br>
             <br>
@@ -75,6 +76,10 @@
             </form>
         </th:block>
         <th:block th:unless="${not #lists.isEmpty(actualCart.items)}">
+            Ihr Warenkorb ist leer
+        </th:block>
+        </th:block>
+        <th:block th:unless="${actualCart}">
             Ihr Warenkorb ist leer
         </th:block>
     </div></div>

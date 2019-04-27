@@ -86,22 +86,21 @@ public class UserAccountController {
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/deleteAddress", method = RequestMethod.POST)
     public String handleDeleteAddress(@RequestParam long addressId, Model model){
-        System.out.println("ADDRESSID: "+ addressId);
         String from = CurrentUserUtil.getCurrentUser(model);
         String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
         Customer customer = customerService.getByLoginName(from).get();
-        for(Address address: customer.getAddressList()){
-            System.out.println(address);
-        }
         if(customer.getAddressList().size()>=1 && addressService.getById(addressId).isPresent()) {
             Address addressToDelete = addressService.getById(addressId).get();
             customer.removeAddress(addressToDelete);
             customerService.updateCustomer(customer);
+            if(addressToDelete.getAllCustomer().isEmpty()) {
+                log.debug("Deleting Adress addressId={}", addressToDelete.getId());
+                addressService.removeAddress(addressToDelete);
+            }
         }
         return "redirect:"+url;
     }
 
-    // TODO update the object instead of delete/create
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/updateAddress", method = RequestMethod.POST)
     public String handleUpdateAddress(@RequestParam String street,
@@ -116,7 +115,6 @@ public class UserAccountController {
         Address newAddress = addressService.createAddress(street, housenumber, zipCode, town);
         customer.addAddress(newAddress);
         customerService.updateCustomer(customer);
-        String url = "/profile?id="+CurrentUserUtil.getCurrentUserId(model);
         return handleDeleteAddress(addressId,model);
     }
 

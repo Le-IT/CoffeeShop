@@ -19,6 +19,7 @@ import whz.informatik.coffeeshop.shop.service.CustomerService;
 import whz.informatik.coffeeshop.shop.service.ShoppingCartService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ShoppingCartController {
@@ -63,10 +64,8 @@ public class ShoppingCartController {
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
-//        Item item = shoppingCartService.createItem(productId,amount);
 
-        log.error("shoppingCartId={}, itemId={}", shoppingCart.getId(), 0);
-        shoppingCartService.addItemToCart(shoppingCart, productId, amount);
+        shoppingCartService.createAndAddItemToCart(shoppingCart, productId, amount);
 
         return "redirect:/";
     }
@@ -74,14 +73,19 @@ public class ShoppingCartController {
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/deleteItemFromCart")
     public String handleDeleteItem(@RequestParam long itemId, Model model){
+        log.debug("Deleting Item itemId={}", itemId);
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
 
-        Item item = shoppingCart.getItemById(itemId).get();
+        Optional<Item> item = shoppingCart.getItemById(itemId);
 
-        shoppingCart.removeItem(item);
-        shoppingCartService.update(shoppingCart);
+        if(item.isPresent()) {
+            shoppingCart.getItems().remove(item.get());
+            shoppingCartService.update(shoppingCart);
+            shoppingCartService.deleteItem(item.get());
+        }
+
         model.addAttribute("actualCart", shoppingCart);
         model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
 
@@ -93,10 +97,11 @@ public class ShoppingCartController {
     public String handleShoppingCart(Model model ){
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
-        ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
+        ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
 
         model.addAttribute("actualCart", shoppingCart);
-        model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
+        if(shoppingCart != null)
+            model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
 
         model.addAttribute("currentCustomer", customer);
         return "shoppingCart";

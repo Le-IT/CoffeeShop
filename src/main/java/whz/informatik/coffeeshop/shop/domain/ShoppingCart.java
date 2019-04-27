@@ -39,20 +39,7 @@ public class ShoppingCart extends BaseEntity<Long> {
                 .filter(item -> item.getId() == itemId)
                 .findFirst();
     }
-    /**
-     *
-     * @param item
-     * @return true if item was merged and the added item needs to be removed
-     */
-    public boolean addItem(Item item) {
-        Optional<Item> it = findProduct(item.getProduct());
-        if(it.isPresent()) {
-            it.get().setQuantity(it.get().getQuantity() + item.getQuantity());
-            return true;
-        }
-        items.add(item);
-        return false;
-    }
+    public void addItem(Item item) { items.add(item); }
     public void addAllItems(Collection<Item> items) {
         items.forEach(item -> addItem(item));
     }

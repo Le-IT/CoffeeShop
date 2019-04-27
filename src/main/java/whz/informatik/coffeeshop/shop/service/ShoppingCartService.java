@@ -23,7 +23,7 @@ public interface ShoppingCartService {
 
     ShoppingCart update(ShoppingCart shoppingCart);
 
-    void addItemToCart(ShoppingCart shoppingCart, long productId, int amount);
+    void createAndAddItemToCart(ShoppingCart shoppingCart, long productId, int amount);
     void addAllItemsToCart(long shoppingCartId, Collection<Item> items);
     void addAllItemsToCart(ShoppingCart shoppingCart, Collection<Item> items);
     void clearCart(long shoppingCartId);

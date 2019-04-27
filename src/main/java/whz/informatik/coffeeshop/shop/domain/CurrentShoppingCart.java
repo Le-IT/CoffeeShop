@@ -29,9 +29,7 @@ public class CurrentShoppingCart {
         return shoppingCart.getCustomer();
     }
 
-    public boolean addItem(Item item){
-        return shoppingCart.addItem(item);
-    }
+    public void addItem(Item item){ shoppingCart.addItem(item); }
 
     public void removeItem(Item item){
         shoppingCart.removeItem(item);

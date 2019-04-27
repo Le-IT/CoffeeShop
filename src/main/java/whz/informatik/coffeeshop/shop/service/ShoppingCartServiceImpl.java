@@ -2,6 +2,7 @@ package whz.informatik.coffeeshop.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.shop.domain.Customer;
@@ -105,7 +106,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public void addItemToCart(ShoppingCart shoppingCart, long productId, int amount) {
+    public void createAndAddItemToCart(ShoppingCart shoppingCart, long productId, int amount) {
         for (Item it : shoppingCart.getItems()) {
             if(it.getProduct().getId() == productId) {
                 it.setQuantity(it.getQuantity() + amount);
@@ -113,7 +114,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 return;
             }
         }
-        shoppingCart.addItem(createItem(productId,amount));
+        Item item = createItem(productId,amount);
+        shoppingCart.addItem(item);
         shoppingCartRepository.save(shoppingCart);
     }
 
@@ -150,7 +152,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.NESTED)
     public Item createItem(long productId, int amount) {
         Product product = productService.getById(productId).get();
         Item item = new Item();
