@@ -7,6 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 
+/**
+ * Class for User Entity
+ *
+ * Table was renamed so there are no collisions with
+ * database internal structures
+ */
 @Entity
 @EntityListeners(UserListener.class)
 @Table(name = "secuser")

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * DTO for ShoppingOrder for more efficient networking
+ */
 public class ShoppingOrderDTO extends BaseDTO<Long> {
 
     private Date orderDate;

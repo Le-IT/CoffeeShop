@@ -5,6 +5,9 @@ import whz.informatik.coffeeshop.common.BaseDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO for Customer for more efficient networking
+ */
 public class CustomerDTO extends BaseDTO<Long> {
     private String firstName;
     private String lastName;

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * DTO for ShoppingCart for more efficient networking
+ */
 public class ShoppingCartDTO extends BaseDTO<Long> {
 
     private Date creationDate;

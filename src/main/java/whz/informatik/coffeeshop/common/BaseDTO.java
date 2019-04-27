@@ -2,6 +2,10 @@ package whz.informatik.coffeeshop.common;
 
 import java.io.Serializable;
 
+/**
+ * Base-Class for DTO Objects
+ * @param <PK> - type of the primary key
+ */
 public abstract class BaseDTO<PK extends Serializable> {
     private PK id;
 
@@ -15,9 +19,8 @@ public abstract class BaseDTO<PK extends Serializable> {
 
     @Override
     public int hashCode() {
-        if (getId() != null) {
+        if (getId() != null)
             return getId().hashCode();
-        }
         return super.hashCode();
     }
 

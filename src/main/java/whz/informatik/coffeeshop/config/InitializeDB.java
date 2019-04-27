@@ -22,6 +22,10 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Locale;
 
+/**
+ * Class for Database Initialization
+ * DB used: h2 in-memory
+ */
 @Component
 public class InitializeDB {
     private static final Logger log = LoggerFactory.getLogger(InitializeDB.class);
@@ -37,7 +41,9 @@ public class InitializeDB {
     @Autowired
     private ProductTypeRepository productTypeRepository;
 
-
+    /**
+     * Initializes the in-memory h2 database with some demo data
+     */
     @PostConstruct
     public void init() {
         log.debug("Database initialized");

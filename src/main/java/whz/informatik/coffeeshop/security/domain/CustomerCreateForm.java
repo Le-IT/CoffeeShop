@@ -3,6 +3,10 @@ package whz.informatik.coffeeshop.security.domain;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Form for Customer creation
+ * holds info for User creation as well
+ */
 public class CustomerCreateForm {
     /** Customer Requirements **/
     // loginName

@@ -2,6 +2,9 @@ package whz.informatik.coffeeshop.security.service.dto;
 
 import whz.informatik.coffeeshop.security.domain.Role;
 
+/**
+ * DTO for User for more efficient networking
+ */
 public class UserDTO {
     private Long id;
     private String loginName;

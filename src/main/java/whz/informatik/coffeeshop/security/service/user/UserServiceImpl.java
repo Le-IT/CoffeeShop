@@ -14,12 +14,14 @@ import whz.informatik.coffeeshop.security.service.dto.UserDTO;
 
 import java.util.*;
 
+/**
+ * Implementation of UserService
+ */
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private UserRepository userRepository;
-
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {

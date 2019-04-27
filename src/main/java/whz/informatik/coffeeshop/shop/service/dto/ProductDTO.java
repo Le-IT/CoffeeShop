@@ -5,6 +5,9 @@ import whz.informatik.coffeeshop.common.BaseDTO;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+/**
+ * DTO for Product for more efficient networking
+ */
 public class ProductDTO extends BaseDTO<Long> {
 
     private String name;

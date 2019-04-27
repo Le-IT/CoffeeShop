@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import whz.informatik.coffeeshop.common.CurrentUserUtil;
 
+/**
+ * Controller for handling login and registration requests
+ */
 @Controller
 public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
@@ -15,6 +18,11 @@ public class LoginController {
     /** Constructor ommited **/
 
 
+    /**
+     * request handling method for login
+     * @param model
+     * @return login page
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginPage(Model model) {
         String from = CurrentUserUtil.getCurrentUser(model);
@@ -24,6 +32,11 @@ public class LoginController {
         } return "login";
     }
 
+    /**
+     * request handling method for register
+     * @param model
+     * @return register page
+     */
     @RequestMapping(value = "/register", method = {RequestMethod.GET,RequestMethod.POST})
     public String getRegisterPage(Model model) {
         log.debug("GET::/register?error=" +

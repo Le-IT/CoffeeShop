@@ -4,6 +4,9 @@ import whz.informatik.coffeeshop.common.BaseDTO;
 
 import java.util.Date;
 
+/**
+ * DTO for Warranty for more efficient networking
+ */
 public class WarrantyDTO extends BaseDTO<Long> {
 
     private Date endDate;

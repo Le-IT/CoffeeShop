@@ -2,6 +2,9 @@ package whz.informatik.coffeeshop.shop.service.dto;
 
 import whz.informatik.coffeeshop.common.BaseDTO;
 
+/**
+ * DTO for Item for more efficient networking
+ */
 public class ItemDTO extends BaseDTO<Long> {
 
     private int quantity;

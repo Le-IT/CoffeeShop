@@ -9,22 +9,41 @@ import org.springframework.validation.Validator;
 import whz.informatik.coffeeshop.security.domain.CustomerCreateForm;
 import whz.informatik.coffeeshop.security.service.user.UserService;
 
+/**
+ * Validator for CustomerCreateForm
+ * checks if entries for creation of customer,user
+ * are correct (as far as possible)
+ */
 @Component
 public class CustomerCreateFormValidator implements Validator {
     private static final Logger log = LoggerFactory.getLogger(CustomerCreateFormValidator.class);
 
     private UserService userService;
 
+    /**
+     * Constructor for Validator
+     * @param userService - userService to be used
+     */
     @Autowired
     public CustomerCreateFormValidator(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * check whether class is supported by this validator or not
+     * @param clazz class to check
+     * @return true if class is supported by the validator
+     */
     @Override
     public boolean supports(Class<?> clazz) {
         return clazz.equals(CustomerCreateForm.class);
     }
 
+    /**
+     * validates a form-object by checking if fields are valid
+     * @param target to validate
+     * @param errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         log.debug("Validating {}", target);

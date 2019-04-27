@@ -11,6 +11,9 @@ import whz.informatik.coffeeshop.security.domain.CurrentUser;
 import whz.informatik.coffeeshop.security.domain.User;
 import whz.informatik.coffeeshop.security.service.user.UserService;
 
+/**
+ * Implementation of UserDetailsService for security checks
+ */
 @Service
 @Qualifier("currentUser")
 public class CurrentUserDetailsService implements UserDetailsService {
@@ -18,11 +21,22 @@ public class CurrentUserDetailsService implements UserDetailsService {
 
     private UserService userService;
 
+    /**
+     * Constructor
+     * @param userService - userService to be used to find users
+     */
     @Autowired
     public CurrentUserDetailsService(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * try to find user by given loginName
+     *
+     * @param loginName
+     * @return currentUser
+     * @throws UsernameNotFoundException if no user were found
+     */
     @Override
     public CurrentUser loadUserByUsername(String loginName) throws UsernameNotFoundException {
         log.debug("Authenticating user with loginName=" + loginName);

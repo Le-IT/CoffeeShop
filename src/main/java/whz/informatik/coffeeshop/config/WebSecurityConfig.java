@@ -11,6 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+/**
+ * Class for security setup
+ * exception for database access on '/h2-console/**'
+ * login: '/login'  >> '/'
+ * logout '/logout' >> '/'
+ */
 @Configuration
 //@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -26,6 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/h2-console/**").antMatchers("/console/**");;
     }
 
+    /**
+     * config base routines/pipes for login/logout as well as sessions
+     * and securing against csrf
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -43,11 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
-                .and()
-                .rememberMe()
         ;
     }
 
+    /**
+     * security setup
+     * referencing our UserDetailService and configure how to encrypt our passwords
+     */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth

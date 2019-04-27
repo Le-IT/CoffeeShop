@@ -9,6 +9,13 @@ import whz.informatik.coffeeshop.shop.service.dto.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for easier handling of DTOs,
+ * as it is necessary really often
+ *
+ * All methods simply copy the values from the bean
+ * to the POJO/DTO
+ */
 public class DTOUtils {
     public static CustomerDTO createDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();

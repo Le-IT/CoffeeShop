@@ -5,6 +5,9 @@ import whz.informatik.coffeeshop.common.BaseDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO for Address for more efficient networking
+ */
 public class AddressDTO extends BaseDTO<Long> {
 
     private String street;

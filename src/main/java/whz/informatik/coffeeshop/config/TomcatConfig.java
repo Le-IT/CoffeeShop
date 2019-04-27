@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+/**
+ * Class for Configuration of the Tomcat Server
+ */
 @Configuration
 public class TomcatConfig {
 
@@ -18,7 +21,10 @@ public class TomcatConfig {
 
     @Value("${server.port}")
     private int httpsPort;
-    
+
+    /**
+     * config tomcat: how to root our project, etc.
+     */
     @Bean
     public TomcatServletWebServerFactory  servletContainer() {
     	TomcatServletWebServerFactory tomcat =
@@ -38,6 +44,9 @@ public class TomcatConfig {
         return tomcat;
     }
 
+    /**
+     * create bridge from http to https
+     */
     private Connector createHttpConnector() {
         Connector connector =
                 new Connector("org.apache.coyote.http11.Http11NioProtocol");

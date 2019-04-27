@@ -5,6 +5,11 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
+/**
+ * Base-Class for Entity Objects
+ * Class is integrated in tables of sub-classes
+ * @param <PK> - type of the primary key
+ */
 @MappedSuperclass
 public abstract class BaseEntity<PK extends Serializable> {
     @Id
@@ -20,9 +25,8 @@ public abstract class BaseEntity<PK extends Serializable> {
 
     @Override
     public int hashCode() {
-        if (getId() != null) {
+        if (getId() != null)
             return getId().hashCode();
-        }
         return super.hashCode();
     }
 

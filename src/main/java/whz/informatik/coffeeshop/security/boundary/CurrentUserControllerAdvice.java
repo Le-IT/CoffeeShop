@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import whz.informatik.coffeeshop.security.domain.CurrentUser;
 
+/**
+ * Advice for giving reference to current User to Controller
+ */
 @ControllerAdvice
 public class CurrentUserControllerAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserControllerAdvice.class);
