@@ -67,6 +67,8 @@ public class ShoppingCartController {
 
         shoppingCartService.createAndAddItemToCart(shoppingCart, productId, amount);
 
+        currentShoppingCart.setShoppingCart(shoppingCart);
+
         return "redirect:/";
     }
 
@@ -79,17 +81,20 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
 
         Optional<Item> item = shoppingCart.getItemById(itemId);
-
-        if(item.isPresent()) {
+        if (item.isPresent()) {
             shoppingCart.getItems().remove(item.get());
             shoppingCartService.update(shoppingCart);
             shoppingCartService.deleteItem(item.get());
         }
 
-        model.addAttribute("actualCart", shoppingCart);
-        model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
+        if(shoppingCart.getItems().isEmpty()) {
+            log.debug("Discarding empty shoppingCart");
+            shoppingCartService.deleteShoppingCart(shoppingCart);
+            currentShoppingCart.setShoppingCart(null);
+        } else
+            currentShoppingCart.setShoppingCart(shoppingCart);
 
-        return "redirect:/shoppingCart?id="+customer.getId();
+        return "redirect:/shoppingCart";
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -98,11 +103,15 @@ public class ShoppingCartController {
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
+        List<ShoppingCart> shoppingCartList = shoppingCartService.getShoppingCartsByCustomer(customer);
+        if(!shoppingCartList.isEmpty())
+            shoppingCart = shoppingCartList.get(shoppingCartList.size() - 1);
 
         model.addAttribute("actualCart", shoppingCart);
-        if(shoppingCart != null)
-            model.addAttribute( "summedPrice", shoppingCart.getCalculatedSum());
-
+        if(shoppingCart != null) {
+            model.addAttribute("summedPrice", shoppingCart.getCalculatedSum());
+            currentShoppingCart.setShoppingCart(shoppingCart);
+        }
         model.addAttribute("currentCustomer", customer);
         return "shoppingCart";
     }

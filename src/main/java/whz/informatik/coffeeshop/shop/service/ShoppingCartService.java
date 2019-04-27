@@ -16,6 +16,7 @@ public interface ShoppingCartService {
     ShoppingCart createShoppingCartForCustomerWithId(long customerId);
     List<ShoppingCart> getShoppingCartsByCustomer(Customer customer);
     List<ShoppingCart> getShoppingCartsByCustomerId(long customerId);
+    void deleteShoppingCart(ShoppingCart shoppingCart);
 
     Optional<ShoppingCartDTO> getShoppingCartDTOById(long shoppingCartId);
     List<ShoppingCartDTO> getShoppingCartsDTOByCustomer(Customer customer);

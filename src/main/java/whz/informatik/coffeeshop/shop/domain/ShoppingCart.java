@@ -13,7 +13,7 @@ import java.util.*;
 @Entity
 public class ShoppingCart extends BaseEntity<Long> {
     private Date creationDate;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Customer customer;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();

@@ -1,5 +1,7 @@
 package whz.informatik.coffeeshop.shop.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +20,7 @@ import java.util.*;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
+    private final Logger log = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
 
     private ShoppingCartRepository shoppingCartRepository;
     private ItemRepository itemRepository;
@@ -97,6 +100,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public void deleteShoppingCart(ShoppingCart shoppingCart) {
+        if(shoppingCartRepository.existsById(shoppingCart.getId()))
+            shoppingCartRepository.deleteById(shoppingCart.getId());
+    }
+
+    @Override
     @Transactional
     public ShoppingCart update(ShoppingCart shoppingCart) {
         if(shoppingCartRepository.existsById(shoppingCart.getId()))
@@ -157,6 +166,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Product product = productService.getById(productId).get();
         Item item = new Item();
         item.setup(amount,product);
-        return itemRepository.save(item);
+        item = itemRepository.save(item);
+        log.debug("Created item itemId={}", item.getId());
+        return item;
     }
 }

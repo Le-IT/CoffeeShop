@@ -74,9 +74,11 @@ public class ShoppingOrderController {
         ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
         ShoppingOrder shoppingOrder = shoppingOrderService.createShoppingOrderForCustomer(customer);
 
-        currentShoppingCart.setShoppingCart(null);
         shoppingCart.removeAllItems();
         shoppingCartService.update(shoppingCart);
+        log.debug("order created :: discarding shoppingCart");
+        shoppingCartService.deleteShoppingCart(shoppingCart);
+        currentShoppingCart.setShoppingCart(null);
 
         return "forward:/warranties/setup?orderId=" + shoppingOrder.getId();
     }
@@ -90,8 +92,12 @@ public class ShoppingOrderController {
         ShoppingOrder shoppingOrder = shoppingOrderService.getShoppingOrderById(orderid).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
 
-        currentShoppingCart.setShoppingCart(null);
+        log.debug("Discarding current shoppingCart");
         shoppingCart.removeAllItems();
+        shoppingCartService.deleteShoppingCart(shoppingCart);
+        currentShoppingCart.setShoppingCart(null);
+
+        shoppingCart = getCurrentShoppingCart(customer);
 
         List<Item> copies = new ArrayList<>();
         shoppingOrder.getItems().forEach(item -> {
