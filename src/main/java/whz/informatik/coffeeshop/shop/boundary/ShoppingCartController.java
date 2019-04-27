@@ -64,9 +64,10 @@ public class ShoppingCartController {
         String from = CurrentUserUtil.getCurrentUser(model);
         Customer customer = customerService.getByLoginName(from).get();
         ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
-        Item item = shoppingCartService.createItem(productId,amount);
+//        Item item = shoppingCartService.createItem(productId,amount);
 
-        shoppingCartService.addItemToCart(shoppingCart, item);
+        log.error("shoppingCartId={}, itemId={}", shoppingCart.getId(), 0);
+        shoppingCartService.addItemToCart(shoppingCart, productId, amount);
 
         return "redirect:/";
     }

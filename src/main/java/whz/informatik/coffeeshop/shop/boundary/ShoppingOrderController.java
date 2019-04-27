@@ -1,5 +1,7 @@
 package whz.informatik.coffeeshop.shop.boundary;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Controller
 public class ShoppingOrderController {
+    private Logger log = LoggerFactory.getLogger(ShoppingOrderController.class);
 
     @Autowired
     private CurrentShoppingCart currentShoppingCart;
@@ -33,6 +36,24 @@ public class ShoppingOrderController {
         this.customerService = customerService;
         this.shoppingCartService = shoppingCartService;
         this.shoppingOrderService = shoppingOrderService;
+    }
+
+    private ShoppingCart getCurrentShoppingCart(Customer customer){
+        ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
+        if(shoppingCart != null)
+            return shoppingCart;
+
+        List<ShoppingCart> shoppingCartList = shoppingCartService.getShoppingCartsByCustomer(customer);
+        if(!shoppingCartList.isEmpty()) {
+            shoppingCart = shoppingCartList.get(shoppingCartList.size() - 1);
+            currentShoppingCart.setShoppingCart(shoppingCart);
+            return shoppingCart;
+        }
+
+        log.debug("Creating new ShoppingCart for Customer = "+customer.getLoginName());
+        shoppingCart = shoppingCartService.createShoppingCartForCustomer(customer);
+        currentShoppingCart.setShoppingCart(shoppingCart);
+        return shoppingCart;
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -63,22 +84,23 @@ public class ShoppingOrderController {
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/templateOrder", method = RequestMethod.POST)
     public String handleTemplateOrder(Model model, @RequestParam Long orderid) {
-        CurrentUserUtil.getCurrentUser(model);
-        ShoppingOrder shoppingOrder = shoppingOrderService.getShoppingOrderById(orderid).get();
-        ShoppingCart shoppingCart = currentShoppingCart.getShoppingCart();
+        String from = CurrentUserUtil.getCurrentUser(model);
+        Customer customer = customerService.getByLoginName(from).get();
 
-//        currentShoppingCart.setShoppingCart(null);
-//        shoppingCart.removeAllItems();
-//
-//        List<Item> copies = new ArrayList<>();
-//        shoppingOrder.getItems().forEach(item -> {
-//            Item it = new Item();
-//            item.setup(item.getQuantity(), item.getProduct());
-//            copies.add(it);
-//        });
-//
-//        shoppingCartService.addAllItemsToCart(shoppingCart, copies);
-//        shoppingCartService.update(shoppingCart);
+        ShoppingOrder shoppingOrder = shoppingOrderService.getShoppingOrderById(orderid).get();
+        ShoppingCart shoppingCart = getCurrentShoppingCart(customer);
+
+        currentShoppingCart.setShoppingCart(null);
+        shoppingCart.removeAllItems();
+
+        List<Item> copies = new ArrayList<>();
+        shoppingOrder.getItems().forEach(item -> {
+            Item it = shoppingCartService.createItem(item.getProduct().getId(), item.getQuantity());
+            copies.add(it);
+        });
+
+        shoppingCartService.addAllItemsToCart(shoppingCart, copies);
+        shoppingCartService.update(shoppingCart);
 
         return "forward:/shoppingCart";
     }

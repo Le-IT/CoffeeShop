@@ -26,6 +26,7 @@ public interface ShoppingCartService {
 
     void addItemToCart(long shoppingCartId, Item item);
     void addItemToCart(ShoppingCart shoppingCart, Item item);
+    void addItemToCart(ShoppingCart shoppingCart, long productId, int amount);
     void addAllItemsToCart(long shoppingCartId, Collection<Item> items);
     void addAllItemsToCart(ShoppingCart shoppingCart, Collection<Item> items);
     void clearCart(long shoppingCartId);
