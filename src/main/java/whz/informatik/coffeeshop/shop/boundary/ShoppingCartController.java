@@ -21,6 +21,11 @@ import whz.informatik.coffeeshop.shop.service.ShoppingCartService;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller for handling shoppingCart related pages/actions
+ * these pages are only accessible from the USER-perspective
+ * respectively to users with associated customer accounts
+ */
 @Controller
 public class ShoppingCartController {
 
@@ -30,6 +35,12 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
     private CustomerService customerService;
 
+    /**
+     * Constructor for ShoppingCartController
+     * @param currentShoppingCart - session-scoped shoppingCart wrapper
+     * @param shoppingCartService - service to provide info about shoppingCarts
+     * @param customerService - service to provide info about customers
+     */
     @Autowired
     public ShoppingCartController(CurrentShoppingCart currentShoppingCart,
                                   ShoppingCartService shoppingCartService,
@@ -57,7 +68,13 @@ public class ShoppingCartController {
         return shoppingCart;
     }
 
-
+    /**
+     * request handling method for addItemToCart-Action
+     * @param productId
+     * @param amount
+     * @param model
+     * @return redirect to homepage
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/addToCart", method = RequestMethod.POST)
     public String handleAddItem(@RequestParam Long productId, @RequestParam int amount, Model model){
@@ -72,6 +89,12 @@ public class ShoppingCartController {
         return "redirect:/";
     }
 
+    /**
+     * request handling method for deleteItemFromCart-Action
+     * @param itemId
+     * @param model
+     * @return redirect to shoppingCart page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/deleteItemFromCart")
     public String handleDeleteItem(@RequestParam long itemId, Model model){
@@ -97,6 +120,11 @@ public class ShoppingCartController {
         return "redirect:/shoppingCart";
     }
 
+    /**
+     * request handling method for shoppingCart overview page
+     * @param model
+     * @return shoppingCart overview page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "shoppingCart")
     public String handleShoppingCart(Model model ){

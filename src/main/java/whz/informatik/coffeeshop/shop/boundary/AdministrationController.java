@@ -12,6 +12,10 @@ import whz.informatik.coffeeshop.security.domain.Role;
 import whz.informatik.coffeeshop.security.service.user.UserService;
 import whz.informatik.coffeeshop.shop.service.CustomerService;
 
+/**
+ * Controller for handling administration related pages
+ * only accessible in the ADMIN-perspective
+ */
 @Controller
 public class AdministrationController {
 
@@ -20,6 +24,11 @@ public class AdministrationController {
     private UserService userService;
     private CustomerService customerService;
 
+    /**
+     * Constructor for OverviewController
+     * @param userService- service to provide info about user
+     * @param customerService - service to provide info about customer
+     */
     @Autowired
     public AdministrationController(UserService userService,
                                     CustomerService customerService) {
@@ -27,6 +36,11 @@ public class AdministrationController {
         this.customerService = customerService;
     }
 
+    /**
+     * request handling method for user overview
+     * @param model
+     * @return userOverview
+     */
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = {"/users_managed"})
     public String getAdministrationPage(Model model) {

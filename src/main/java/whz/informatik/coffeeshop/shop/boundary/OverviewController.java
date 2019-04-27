@@ -14,6 +14,9 @@ import whz.informatik.coffeeshop.shop.service.dto.ProductDTO;
 
 import java.util.List;
 
+/**
+ * Controller for handling home-/productOverview page
+ */
 @Controller
 public class OverviewController {
     private static final Logger log = LoggerFactory.getLogger(OverviewController.class);
@@ -21,7 +24,11 @@ public class OverviewController {
     private ProductService productService;
     private CustomerService customerService;
 
-
+    /**
+     * Constructor for OverviewController
+     * @param productService - service to provide info about products
+     * @param customerService - service to provide info about customer
+     */
     @Autowired
     public OverviewController(ProductService productService,
                               CustomerService customerService) {
@@ -30,6 +37,11 @@ public class OverviewController {
     }
 
 
+    /**
+     * request handling method for product overview/ homepage
+     * @param model
+     * @return productOverview - the homepage
+     */
     @RequestMapping(value = {"/","/products"})
     public String getHomePage(Model model) {
         String from = CurrentUserUtil.getCurrentUser(model);
