@@ -7,6 +7,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.util.Date;
 
+/**
+ * Class for Warranty Entity
+ */
 @Entity
 public class Warranty extends BaseEntity<Long> {
     private Date endDate;
@@ -14,6 +17,10 @@ public class Warranty extends BaseEntity<Long> {
     private Item item;
     @ManyToOne
     private Customer customer;
+
+
+    /** Constructor ommited **/
+
 
     public Date getEndDate() {
         return endDate;
@@ -33,6 +40,13 @@ public class Warranty extends BaseEntity<Long> {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    /**
+     * setup method to set all necessary fields/ prepare for persist
+     * @param endDate
+     * @param item
+     * @param customer
+     */
     public void setup(Date endDate, Item item, Customer customer) {
         setEndDate(endDate);
         setItem(item);

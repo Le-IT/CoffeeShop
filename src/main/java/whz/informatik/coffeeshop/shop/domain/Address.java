@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class for Address Entity
+ */
 @Entity
 public class Address extends BaseEntity<Long> {
 
@@ -17,6 +20,9 @@ public class Address extends BaseEntity<Long> {
     private String zipCode;
     @ManyToMany(mappedBy = "addressList")
     private List<Customer> customers = new ArrayList<>();
+
+
+    /** Constructor ommited **/
 
 
     public String getStreet() {
@@ -48,6 +54,14 @@ public class Address extends BaseEntity<Long> {
     }
     public void removeCustomer(Customer customer) { customers.remove(customer); }
     public List<Customer> getAllCustomer() { return customers; }
+
+    /**
+     * setup method to set all necessary fields/ prepare for persist
+     * @param street
+     * @param housenumber
+     * @param zipCode
+     * @param town
+     */
     public void setup(String street, String housenumber, String zipCode, String town) {
         setStreet(street);
         setHousenumber(housenumber);
@@ -55,6 +69,10 @@ public class Address extends BaseEntity<Long> {
         setTown(town);
     }
 
+    /**
+     * pretty print
+     * @return str - address in the format "street housenumber, zipCode town"
+     */
     public String toPrintable() {
         return getStreet() + " " + getHousenumber() + ", " + getZipCode() + " " + getTown();
     }

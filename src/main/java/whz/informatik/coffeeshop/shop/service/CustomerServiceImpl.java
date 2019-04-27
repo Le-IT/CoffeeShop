@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.security.domain.CustomerCreateForm;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of CustomerService
+ */
 @Service
 public class CustomerServiceImpl implements CustomerService{
     private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
@@ -121,9 +125,9 @@ public class CustomerServiceImpl implements CustomerService{
         return customerRepository.existsById(customerId);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.NESTED)
     @Override
-    public void createCustomer(CustomerCreateForm form) {
+    public Customer createCustomer(CustomerCreateForm form) {
         log.info("Creating customer with loginName=" + form.getLoginName());
 
         Address address = new Address();
@@ -141,6 +145,6 @@ public class CustomerServiceImpl implements CustomerService{
 
         customer.addAddress(address);
 
-        customerRepository.save(customer);
+        return customerRepository.save(customer);
     }
 }

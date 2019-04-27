@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the AddressService
+ */
 @Service
 public class AddressServiceImpl implements AddressService{
 
@@ -19,7 +22,8 @@ public class AddressServiceImpl implements AddressService{
 
     @Autowired
     public AddressServiceImpl(AddressRepository addressRepository){
-        this.addressRepository = addressRepository; }
+        this.addressRepository = addressRepository;
+    }
 
 
     @Override
@@ -61,13 +65,6 @@ public class AddressServiceImpl implements AddressService{
         } return Optional.empty();
     }
 
-    /**
-     * If Adress with address.id exists
-     * updates the adress in db with the current state of address(param)
-     *
-     * @param address - the customer to update
-     * @return address - the customer for further calls, if non existant return null
-     */
     @Override
     public Address updateAddress(Address address) {
         if(!addressRepository.existsById(address.getId())) return null;

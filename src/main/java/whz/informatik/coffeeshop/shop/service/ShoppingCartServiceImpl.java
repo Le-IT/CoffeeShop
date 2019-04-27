@@ -18,6 +18,9 @@ import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ * Implementation of ShoppingCartService
+ */
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final Logger log = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);

@@ -12,6 +12,9 @@ import whz.informatik.coffeeshop.shop.service.dto.WarrantyDTO;
 
 import java.util.*;
 
+/**
+ * Implementation of the WarrantyService
+ */
 @Service
 public class WarrantyServiceImpl implements WarrantyService{
 

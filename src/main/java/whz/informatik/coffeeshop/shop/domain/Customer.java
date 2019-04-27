@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Class for Customer Entity
+ */
 @Entity
 @EntityListeners(CustomerListener.class)
 public class Customer extends BaseEntity<Long> {
@@ -24,6 +27,9 @@ public class Customer extends BaseEntity<Long> {
     private List<ShoppingOrder> orders = new ArrayList<>();
     @OneToMany
     private List<Warranty> warrantyList = new ArrayList<>();
+
+
+    /** Constructor ommited **/
 
 
     public String getFirstName() {
@@ -44,17 +50,31 @@ public class Customer extends BaseEntity<Long> {
     public void setLoginName(String loginName) {
         this.loginName = loginName;
     }
+
+    /**
+     * Adds address bi-directional
+     * @param address
+     */
     public void addAddress(Address address) {
         address.addCustomer(this);
         addressList.add(address);
     }
+
     public List<Address> getAddressList() {
         return addressList;
     }
+
+    /**
+     * try to remove address
+     * customers have to have at least one address
+     * @param address
+     * @return true if address was removed
+     */
     public boolean removeAddress(Address address) {
         if (addressList.size()<2) return false;
         return addressList.remove(address);
     }
+
     public void addOrder(ShoppingOrder order) {
         orders.add(order);
     }
@@ -67,22 +87,20 @@ public class Customer extends BaseEntity<Long> {
     public List<Warranty> getWarrantyList() {
         return warrantyList;
     }
+
+    /**
+     * setup method to set all necessary fields/ prepare for persist
+     * @param firstName
+     * @param lastName
+     * @param loginName
+     * @param address
+     */
     public void setup(String firstName, String lastName, String loginName, Address address) {
         setFirstName(firstName);
         setLastName(lastName);
         setLoginName(loginName);
         addAddress(address);
     }
-
-    public boolean hasWarranty(Item item, Date endDate){
-        for(Warranty warranty: warrantyList){
-            if(warranty.getEndDate()==endDate && warranty.getItem()==item){
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     @Override
     public String toString() {

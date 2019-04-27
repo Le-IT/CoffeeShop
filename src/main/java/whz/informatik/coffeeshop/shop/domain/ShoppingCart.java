@@ -10,6 +10,9 @@ import javax.persistence.OneToMany;
 import java.text.DecimalFormat;
 import java.util.*;
 
+/**
+ * Class for ShoppingCart Entity
+ */
 @Entity
 public class ShoppingCart extends BaseEntity<Long> {
     private Date creationDate;
@@ -17,6 +20,10 @@ public class ShoppingCart extends BaseEntity<Long> {
     private Customer customer;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
+
+
+    /** Constructor ommited **/
+
 
     public Date getCreationDate() {
         return creationDate;
@@ -49,21 +56,21 @@ public class ShoppingCart extends BaseEntity<Long> {
     public void removeAllItems(){
        items.clear();
     }
+
+    /**
+     * setup method to set all necessary fields/ prepare for persist
+     * @param creationDate
+     * @param customer
+     */
     public void setup(Date creationDate, Customer customer) {
         setCreationDate(creationDate);
         setCustomer(customer);
     }
 
-
-
-
-
-    public Optional<Item> findProduct(Product product) {
-        return items.stream()
-                .filter(item -> product.equals(item.getProduct()))
-                .findFirst();
-    }
-
+    /**
+     * TODO
+     * @return
+     */
     public String getCalculatedSum(){
         double tmpSum = 0;
         DecimalFormat f = new DecimalFormat("#0.00");

@@ -8,11 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+/**
+ * Class for ShoppingOrder Entity
+ */
 @Entity
 public class ShoppingOrder extends BaseEntity<Long> {
     private Date orderDate;
     @OneToMany
     Collection<Item> items = new ArrayList<>();
+
+
+    /** Constructor ommited **/
 
 
     public Date getOrderDate() { return orderDate; }
@@ -25,6 +31,11 @@ public class ShoppingOrder extends BaseEntity<Long> {
     public void removeItem(Item item) {
         items.remove(item);
     }
+
+    /**
+     * setup method to set all necessary fields/ prepare for persist
+     * @param orderDate
+     */
     public void setup(Date orderDate) { setOrderDate(orderDate); }
 
     @Override

@@ -7,11 +7,19 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Wrapper class for shoppingCart to handle shoppingCart
+ * easier in session
+ */
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CurrentShoppingCart {
 
     private ShoppingCart shoppingCart;
+
+
+    /** Constructor ommited **/
+
 
     public ShoppingCart getShoppingCart() {
         return shoppingCart;

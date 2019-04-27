@@ -7,6 +7,9 @@ import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+/**
+ * Class for Product Entity
+ */
 @Entity
 public class Product extends BaseEntity<Long> {
     private String name;
@@ -15,6 +18,9 @@ public class Product extends BaseEntity<Long> {
     private BigDecimal price;
     @ManyToOne
     private ProductType productType;
+
+
+    /** Constructor ommited **/
 
 
     public void setName(String name) { this.name = name; }
@@ -27,6 +33,15 @@ public class Product extends BaseEntity<Long> {
     public Currency getCurrency() { return currency; }
     public void setProductType(ProductType productType) { this.productType = productType; }
     public ProductType getProductType() { return productType; }
+
+    /**
+     * setup method to set all necessary fields/ prepare for persist
+     * @param name
+     * @param description
+     * @param price
+     * @param currency
+     * @param productType
+     */
     public void setup(String name, String description, BigDecimal price, Currency currency, ProductType productType) {
         setName(name);
         setDescription(description);

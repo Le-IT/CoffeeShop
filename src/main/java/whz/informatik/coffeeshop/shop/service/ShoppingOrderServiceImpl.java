@@ -12,6 +12,9 @@ import whz.informatik.coffeeshop.shop.service.dto.ShoppingOrderDTO;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ * Implementation of ShoppingOrderService
+ */
 @Service
 public class ShoppingOrderServiceImpl implements ShoppingOrderService {
 

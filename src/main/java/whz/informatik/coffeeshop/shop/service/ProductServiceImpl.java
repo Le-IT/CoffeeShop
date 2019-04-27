@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of ProductService
+ */
 @Service
 public class ProductServiceImpl implements ProductService{
 

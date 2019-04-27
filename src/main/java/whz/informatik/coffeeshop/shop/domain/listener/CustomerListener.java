@@ -8,6 +8,9 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
 
+/**
+ * Entity Listener for Customer create/update/delete
+ */
 public class CustomerListener {
     private static final Logger log = LoggerFactory.getLogger(CustomerListener.class);
 
