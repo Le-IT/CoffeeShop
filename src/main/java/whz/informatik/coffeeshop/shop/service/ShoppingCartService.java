@@ -2,7 +2,6 @@ package whz.informatik.coffeeshop.shop.service;
 
 import whz.informatik.coffeeshop.shop.domain.Customer;
 import whz.informatik.coffeeshop.shop.domain.Item;
-import whz.informatik.coffeeshop.shop.domain.Product;
 import whz.informatik.coffeeshop.shop.domain.ShoppingCart;
 import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
 
@@ -24,8 +23,6 @@ public interface ShoppingCartService {
 
     ShoppingCart update(ShoppingCart shoppingCart);
 
-    void addItemToCart(long shoppingCartId, Item item);
-    void addItemToCart(ShoppingCart shoppingCart, Item item);
     void addItemToCart(ShoppingCart shoppingCart, long productId, int amount);
     void addAllItemsToCart(long shoppingCartId, Collection<Item> items);
     void addAllItemsToCart(ShoppingCart shoppingCart, Collection<Item> items);

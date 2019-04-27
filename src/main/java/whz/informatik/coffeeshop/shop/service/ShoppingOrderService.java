@@ -1,7 +1,8 @@
 package whz.informatik.coffeeshop.shop.service;
 
-import whz.informatik.coffeeshop.shop.domain.*;
-import whz.informatik.coffeeshop.shop.service.dto.ShoppingCartDTO;
+import whz.informatik.coffeeshop.shop.domain.Customer;
+import whz.informatik.coffeeshop.shop.domain.Item;
+import whz.informatik.coffeeshop.shop.domain.ShoppingOrder;
 import whz.informatik.coffeeshop.shop.service.dto.ShoppingOrderDTO;
 
 import java.util.Collection;

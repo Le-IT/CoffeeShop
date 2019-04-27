@@ -2,12 +2,10 @@ package whz.informatik.coffeeshop.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import whz.informatik.coffeeshop.common.DTOUtils;
 import whz.informatik.coffeeshop.shop.domain.Address;
 import whz.informatik.coffeeshop.shop.domain.repository.AddressRepository;
 import whz.informatik.coffeeshop.shop.service.dto.AddressDTO;
-
 
 import java.util.ArrayList;
 import java.util.List;

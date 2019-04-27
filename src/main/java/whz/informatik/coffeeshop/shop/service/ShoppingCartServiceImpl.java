@@ -105,29 +105,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public void addItemToCart(long shoppingCartId, Item item) {
-        Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findById(shoppingCartId);
-        if(shoppingCartOptional.isPresent())
-            addItemToCart(shoppingCartOptional.get(),item);
-    }
-
-    @Override
-    @Transactional
-    public void addItemToCart(ShoppingCart shoppingCart, Item item) {
-        for (Item it : shoppingCart.getItems()) {
-            if (it.getProduct() == item.getProduct()) {
-                it.setQuantity(it.getQuantity() + item.getQuantity());
-                itemRepository.delete(item);
-                shoppingCartRepository.save(shoppingCart);
-                return;
-            }
-        }
-        shoppingCart.addItem(item);
-        shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Override
-    @Transactional
     public void addItemToCart(ShoppingCart shoppingCart, long productId, int amount) {
         for (Item it : shoppingCart.getItems()) {
             if(it.getProduct().getId() == productId) {

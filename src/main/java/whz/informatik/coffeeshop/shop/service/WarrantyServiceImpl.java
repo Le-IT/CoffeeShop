@@ -3,13 +3,13 @@ package whz.informatik.coffeeshop.shop.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import whz.informatik.coffeeshop.common.DTOUtils;
-import whz.informatik.coffeeshop.shop.domain.*;
+import whz.informatik.coffeeshop.shop.domain.Customer;
+import whz.informatik.coffeeshop.shop.domain.Item;
+import whz.informatik.coffeeshop.shop.domain.Warranty;
 import whz.informatik.coffeeshop.shop.domain.repository.ShoppingOrderRepository;
 import whz.informatik.coffeeshop.shop.domain.repository.WarrantyRepository;
-import whz.informatik.coffeeshop.shop.service.dto.ShoppingOrderDTO;
 import whz.informatik.coffeeshop.shop.service.dto.WarrantyDTO;
 
-import java.time.Instant;
 import java.util.*;
 
 @Service
