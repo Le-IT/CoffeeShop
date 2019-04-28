@@ -17,6 +17,9 @@ import whz.informatik.coffeeshop.shop.service.dto.WarrantyDTO;
 
 import java.util.List;
 
+/**
+ *  Controller for handling warranty related pages/actions
+ */
 @Controller
 public class WarrantyController {
 
@@ -24,6 +27,12 @@ public class WarrantyController {
     private WarrantyService warrantyService;
     private ShoppingOrderService shoppingOrderService;
 
+    /**
+     * Constructor for warrantyController
+     * @param customerService
+     * @param warrantyService
+     * @param shoppingOrderService
+     */
     @Autowired
     public WarrantyController(CustomerService customerService,
                               WarrantyService warrantyService,
@@ -33,6 +42,11 @@ public class WarrantyController {
         this.shoppingOrderService = shoppingOrderService;
     }
 
+    /**
+     *  request handling method for showing the warrantyoverview-page
+     * @param model
+     * @return warrantie overview
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value= "/showWarranties")
     public String handleShowWarranties(Model model){
@@ -46,6 +60,12 @@ public class WarrantyController {
         return "warranties";
     }
 
+    /**
+     * request handling method for hadleing warranties setup
+     * @param model
+     * @param orderId
+     * @return homepage
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping("/warranties/setup")
     public String handleWarrantiesSetup(Model model, @RequestParam long orderId) {

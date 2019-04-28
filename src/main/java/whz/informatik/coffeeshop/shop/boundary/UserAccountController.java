@@ -28,6 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**
+ * Controller for handling UserAccount related pages/actions
+ */
 @Controller
 public class UserAccountController {
 
@@ -37,6 +40,12 @@ public class UserAccountController {
     private CustomerService customerService;
     private AddressService addressService;
 
+    /**
+     *  Constructor for UserAccountController
+     * @param userService
+     * @param customerService
+     * @param addressService
+     */
     @Autowired
     public UserAccountController(UserService userService,
                                  CustomerService customerService,
@@ -46,6 +55,12 @@ public class UserAccountController {
         this.addressService = addressService;
     }
 
+    /**
+     *request handling method for showing Account Page
+     * @param userId
+     * @param model
+     * @return Account Page
+     */
     @PreAuthorize("#userId == principal.id or hasAuthority('ADMIN')")
     @RequestMapping(value = {"/profile"})
     public String showAccountPage(@RequestParam("id") long userId, Model model) {
@@ -66,6 +81,15 @@ public class UserAccountController {
         return "profile";
     }
 
+    /**
+     * request handling method for handleiong the adress
+     * @param street
+     * @param housenumber
+     * @param town
+     * @param zipCode
+     * @param model
+     * @return Profile page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/addAdress", method = RequestMethod.POST)
     public String handleAddAddress(@RequestParam String street,
@@ -83,6 +107,12 @@ public class UserAccountController {
         return "redirect:"+url;
     }
 
+    /**
+     * request handling method for deleting an adress
+     * @param addressId
+     * @param model
+     * @return profile page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/deleteAddress", method = RequestMethod.POST)
     public String handleDeleteAddress(@RequestParam long addressId, Model model){
@@ -101,6 +131,16 @@ public class UserAccountController {
         return "redirect:"+url;
     }
 
+    /**
+     * request handling method for update an address
+     * @param street
+     * @param housenumber
+     * @param town
+     * @param zipCode
+     * @param addressId
+     * @param model
+     * @return deleting old adress
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping (value = "/updateAddress", method = RequestMethod.POST)
     public String handleUpdateAddress(@RequestParam String street,
@@ -118,6 +158,14 @@ public class UserAccountController {
         return handleDeleteAddress(addressId,model);
     }
 
+    /**
+     * request handling method for handleing a user create form
+     * @param form
+     * @param bindingResult
+     * @param request
+     * @param redir
+     * @return rv (registration-page or login-page)
+     */
     @RequestMapping(value = "/users/create", method = RequestMethod.POST)
     public RedirectView handleUserCreateForm(@Valid @ModelAttribute("newCustomerForm") CustomerCreateForm form, BindingResult bindingResult,
                                              HttpServletRequest request, RedirectAttributes redir) {
@@ -144,6 +192,12 @@ public class UserAccountController {
         return rv;
     }
 
+    /**
+     * request handling method for deleting an user
+     * @param userid
+     * @param model
+     * @return users overview-page
+     */
     @PreAuthorize("#userid == principal.id or hasAuthority('ADMIN')")
     @RequestMapping(value = "/users/delete", method = RequestMethod.POST)
     public String handleUserDelete(@RequestParam Long userid, Model model) {

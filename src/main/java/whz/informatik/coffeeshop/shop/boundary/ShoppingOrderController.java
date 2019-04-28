@@ -17,7 +17,11 @@ import whz.informatik.coffeeshop.shop.service.ShoppingOrderService;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Controller for handling shoppingOrder related pages/actions
+ * these pages are only accessible from the USER-perspective
+ * respectively to users with associated customer accounts
+ */
 @Controller
 public class ShoppingOrderController {
     private Logger log = LoggerFactory.getLogger(ShoppingOrderController.class);
@@ -29,6 +33,12 @@ public class ShoppingOrderController {
     private ShoppingCartService shoppingCartService;
     private ShoppingOrderService shoppingOrderService;
 
+    /**
+     * Constructor for ShoppingCartController
+     * @param customerService - service to provide info about customers
+     * @param shoppingCartService - service to provide info about shoppingCarts
+     * @param shoppingOrderService - service to provide info about shoppingOrders
+     */
     @Autowired
     public ShoppingOrderController(CustomerService customerService,
                                    ShoppingCartService shoppingCartService,
@@ -55,7 +65,11 @@ public class ShoppingOrderController {
         currentShoppingCart.setShoppingCart(shoppingCart);
         return shoppingCart;
     }
-
+    /**
+     * request handling method for a shoppingOrder
+     * @param model
+     * @return leading to ShoppingOder Overview Page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/orders")
     public String handleShoppingOrder(Model model) {
@@ -65,7 +79,11 @@ public class ShoppingOrderController {
         model.addAttribute("orders", customer.getOrders());
         return "shoppingOrder";
     }
-
+    /**
+     * request handling method for sending a shoppingOrder
+     * @param model
+     * @return leading to Warranty Page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/sentOrder")
     public String handleSentOrder(Model model){
@@ -82,7 +100,12 @@ public class ShoppingOrderController {
 
         return "forward:/warranties/setup?orderId=" + shoppingOrder.getId();
     }
-
+    /**
+     * request handling method for handleing a TemplateOrder
+     * @param model
+     * @param orderid
+     * @return forwarding to shoppingCart Page
+     */
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/templateOrder", method = RequestMethod.POST)
     public String handleTemplateOrder(Model model, @RequestParam Long orderid) {
