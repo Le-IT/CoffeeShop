@@ -1,0 +1,15 @@
+whz.informatik.coffeeshop
+whz.informatik.coffeeshop.common
+whz.informatik.coffeeshop.config
+whz.informatik.coffeeshop.security.boundary
+whz.informatik.coffeeshop.security.domain
+whz.informatik.coffeeshop.security.service.currentuser
+whz.informatik.coffeeshop.security.service.dto
+whz.informatik.coffeeshop.security.service.user
+whz.informatik.coffeeshop.security.service.validator
+whz.informatik.coffeeshop.shop.boundary
+whz.informatik.coffeeshop.shop.domain
+whz.informatik.coffeeshop.shop.domain.listener
+whz.informatik.coffeeshop.shop.domain.repository
+whz.informatik.coffeeshop.shop.service
+whz.informatik.coffeeshop.shop.service.dto
